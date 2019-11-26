@@ -31,11 +31,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    mytool.cpp
+    mytool.cpp \
+    mainloopthread.cpp \
+    mypicture.cpp \
+    myscene.cpp \
+    mybutton.cpp
 
 HEADERS += \
         mainwindow.h \
-    mytool.h
+    mytool.h \
+    mainloopthread.h \
+    mypicture.h \
+    myscene.h \
+    mybutton.h
 
 FORMS += \
         mainwindow.ui
