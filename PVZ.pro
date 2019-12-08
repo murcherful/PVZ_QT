@@ -35,7 +35,8 @@ SOURCES += \
     mainloopthread.cpp \
     mypicture.cpp \
     myscene.cpp \
-    mybutton.cpp
+    mybutton.cpp \
+    myobject.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     mainloopthread.h \
     mypicture.h \
     myscene.h \
-    mybutton.h
+    mybutton.h \
+    myobject.h
 
 FORMS += \
         mainwindow.ui

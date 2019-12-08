@@ -1,20 +1,12 @@
 #include "mybutton.h"
 
-MyButton::MyButton(QObject *parent) : QObject(parent)
+MyButton::MyButton()
 {
+    //std::cout << "[Debug]: GG" << std::endl;
     valible = 1;
     isPush = 0;
     name = "";
     active = 1;
-}
-
-void MyButton::setName(const std::string name){
-    this->name = name;
-}
-
-void MyButton::setPostion(int x, int y){
-    this->x = x;
-    this->y = y;
 }
 
 void MyButton::loadPicture(const std::string pathNormal, const std::string pathPush){
@@ -35,10 +27,12 @@ void MyButton::draw(cv::Mat &image){
         return;
     }
     if(isPush){
-        picturePush.getPicture().copyTo(image(cv::Rect(std::min(x, image.cols-w), std::min(y, image.rows-h), w, h)), picturePush.getMask());
+        picturePush.draw(x, y, image);
+        //picturePush.getPicture().copyTo(image(cv::Rect(std::min(x, image.cols-w), std::min(y, image.rows-h), w, h)), picturePush.getMask());
     }
     else{
-        pictureNormal.getPicture().copyTo(image(cv::Rect(std::min(x, image.cols-w), std::min(y, image.rows-h), w, h)), pictureNormal.getMask());
+        pictureNormal.draw(x, y, image);
+        //pictureNormal.getPicture().copyTo(image(cv::Rect(std::min(x, image.cols-w), std::min(y, image.rows-h), w, h)), pictureNormal.getMask());
     }
 }
 
@@ -65,13 +59,17 @@ void MyButton::setActive(){
     active = 1;
 }
 
+MyPicture* MyButton::getPicture(){
+    return &pictureNormal;
+}
+
 void MyButton::setDeactive(){
     active = 0;
 }
 
 CooldownButton::CooldownButton(){
     coolDownTime = 0;
-    coolDonwCount = 0;
+    coolDownCount = 0;
 }
 
 void CooldownButton::addInfo(std::string info){
@@ -83,26 +81,68 @@ void CooldownButton::setCooldownTime(int t){
 }
 
 void CooldownButton::update(){
-    if(coolDonwCount>0){
-        coolDonwCount--;
+    if(coolDownCount>0){
+        coolDownCount--;
     }
-    else if(!valible && coolDonwCount == 0){
+    else if(!valible && coolDownCount == 0){
         valible = 1;
     }
     MyButton::update();
 }
 
 void CooldownButton::draw(cv::Mat &image){
+    if(!active){
+        return;
+    }
+    cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(150, 150, 150), -1);
+    cv::rectangle(image, cv::Rect(x, y, w, h*((double(coolDownTime-coolDownCount)/coolDownTime))), cv::Scalar(255, 255, 255), -1);
+    cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(0, 0, 0), 3);
     MyButton::draw(image);
+    //std::cout << "dd" << std::endl;
     for(int i = 0; i < infos.size(); ++i){
         cv::putText(image, infos[i], cv::Point(x, y+h+(i+1)*20), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
     }
 }
 
 void CooldownButton::release(){
-    coolDonwCount = coolDownTime;
+    coolDownCount = coolDownTime;
     valible = 0;
     MyButton::release();
 }
 
+Sun::Sun(){
+    sunNumber = 0;
+}
+
+void Sun::update(){
+    int randNumber = rand()%GEN_SUN_PRE;
+    if(randNumber == 0){
+        sunNumber ++;
+    }
+    MyButton::update();
+}
+
+void Sun::draw(cv::Mat &image){
+    if(sunNumber > 0){
+        pictureNormal.draw(x, y, image);
+        std::stringstream ss;
+        ss << sunNumber;
+        cv::putText(image, ss.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+    }
+}
+
+void Sun::addSun(int n){
+    sunNumber += n;
+}
+
+void Sun::removeSun(){
+    int temp = sunNumber;
+    sunNumber = 0;
+    getSun(temp);
+}
+
+void Sun::release(){
+    removeSun();
+    MyButton::release();
+}
 

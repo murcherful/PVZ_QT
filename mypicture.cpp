@@ -11,6 +11,7 @@ void MyPicture::load(const std::string path, double scale){
     cv::resize(pTemp, p, cv::Size((double)pTemp.cols*scale, (double)pTemp.rows*scale));
     cv::Mat mTemp = cv::imread(path, cv::IMREAD_GRAYSCALE);
     cv::resize(mTemp, m, cv::Size((double)mTemp.cols*scale, (double)mTemp.rows*scale));
+    this->path = path;
 }
 
 cv::Mat MyPicture::getPicture(){
@@ -27,4 +28,14 @@ int MyPicture::width(){
 
 int MyPicture::height(){
     return p.rows;
+}
+
+void MyPicture::draw(int x, int y, cv::Mat &image){
+    int w = width();
+    int h = height();
+    p.copyTo(image(cv::Rect(std::min(x, image.cols-w), std::min(y, image.rows-h), w, h)), m);
+}
+
+std::string  MyPicture::getPath(){
+    return path;
 }

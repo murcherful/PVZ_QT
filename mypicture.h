@@ -7,6 +7,11 @@
 class MyPicture
 {
 public:
+    double scale;
+    cv::Mat p;
+    cv::Mat m;
+    std::string path;
+
     MyPicture();
 
     void load(const std::string path, double scale);
@@ -14,11 +19,12 @@ public:
     cv::Mat getMask();
     int width();
     int height();
+    void draw(int x, int y, cv::Mat &image);
+    std::string getPath();
 
 private:
-    double scale;
-    cv::Mat p;
-    cv::Mat m;
+
 };
 
 #endif // MYPICTURE_H
+

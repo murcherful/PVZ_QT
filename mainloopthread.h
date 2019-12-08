@@ -10,8 +10,8 @@
 #include <cmath>
 #include "myscene.h"
 #include <string>
+#include "myobject.h"
 
-const std::string sourcePath = "/home/murcherful/Qt/Project/PVZ/picture/";
 
 class MainLoopThread : public QThread
 {
@@ -41,6 +41,11 @@ private:
     MyScene scene1;
     PlayScene scene2;
 
+    MyButton* playButton;
+    MyButton* exitButton;
+    MyButton* exitButtonSmall;
+    CooldownButton* peashooterButton;
+
     void mainLoop();
 
 signals:
@@ -52,7 +57,12 @@ public slots:
     void myMouseReleaseSlot(QMouseEvent *e);
 
     void playButtonRelease();
+
     void exitButtonRelease();
+
+    void peaShooterButtonPush();
+
+    void peaShooterButtonRelease();
 
 };
 

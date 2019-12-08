@@ -1,5 +1,9 @@
 #include "mainloopthread.h"
 
+int gridHeight = -1;
+int gridWidth = -1;
+
+
 MainLoopThread::MainLoopThread(QLabel* label)
 {
     this->label = label;
@@ -7,27 +11,86 @@ MainLoopThread::MainLoopThread(QLabel* label)
     this->isStop = 0;
     this->mouseX = MW_W/2;
     this->mouseY = MW_H/2;
-    mouseImageDefault.load(sourcePath+"mouseDefault.png", 1.0);
+    mouseImageDefault.load(SOURCE_PATH+"mouseDefault.png", 1.0);
     mouseImage = &mouseImageDefault;
+    // set scene
     currentScene = &scene1;
-    scene1.load(sourcePath+"welcome.png");
-    MyButton* playButton = new MyButton();
+    // load scene1 (welcome scene)
+    // and add buttons
+    scene1.load(SOURCE_PATH+"welcome.png");
+
+    playButton = new MyButton();
+
     playButton->setName("playButton");
-    playButton->setPostion(400, 510);
-    playButton->loadPicture(sourcePath+"playButton.png", sourcePath+"playButton_push.png");
+    playButton->setPosition(355, 510);
+    playButton->loadPicture(SOURCE_PATH+"playButton.png", SOURCE_PATH+"playButton_push.png");
     connect(playButton, &MyButton::myRelease, this, &MainLoopThread::playButtonRelease);
+    //std::cout << "[Debug]: add button: " << playButton->name << std::endl;
     scene1.addButton(playButton);
-    MyButton* exitButton = new MyButton();
+
+    exitButton = new MyButton();
     exitButton->setName("exitButton");
-    exitButton->setPostion(400, 650);
-    exitButton->loadPicture(sourcePath+"exitButton.png", sourcePath+"exitButton_push.png");
+    exitButton->setPosition(695, 510);
+    exitButton->loadPicture(SOURCE_PATH+"exitButton.png", SOURCE_PATH+"exitButton_push.png");
     connect(exitButton, &MyButton::myRelease, this, &MainLoopThread::exitButtonRelease);
     scene1.addButton(exitButton);
-    scene2.load(sourcePath+"playScene.png");
-    scene2.addButton(exitButton);
-    CooldownButton* peashooterButton = new CooldownButton();
+
+    // load scene2 (play scene)
+    // add buttons
+    // and add objects
+    scene2.load(SOURCE_PATH+"playScene.png");
+    exitButtonSmall = new MyButton();
+    exitButtonSmall->setName("exitButtonSmall");
+    exitButtonSmall->setPosition(1150, 10);
+    exitButtonSmall->loadPicture(SOURCE_PATH+"exitButtonSmall.png", SOURCE_PATH+"exitButtonSmall_push.png");
+    connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitButtonRelease);
+    scene2.addButton(exitButtonSmall);
+
+    peashooterButton = new CooldownButton();
     peashooterButton->setName("PeaShooterButton");
-    peashooterButton->loadPicture(sourcePath+"PeaShooter.png", sourcePath+"PeaShooter.png");
+    peashooterButton->loadPicture(SOURCE_PATH+"PeaShooter.png", SOURCE_PATH+"PeaShooter.png");
+    peashooterButton->setCooldownTime(PFS*10);
+    peashooterButton->addInfo("PeaShooter");
+    connect(peashooterButton, &CooldownButton::firstPush, this, &MainLoopThread::peaShooterButtonPush);
+    connect(peashooterButton, &CooldownButton::myRelease, this, &MainLoopThread::peaShooterButtonRelease);
+    scene2.addCooldownButton(peashooterButton);
+
+    // add grids
+    for(int i = 0 ;i < GRID_Y_N; ++i){
+        for(int j = 0; j < GRID_X_N; ++j){
+            Grid* grid = new Grid();
+            grid->loadPicture(SOURCE_PATH+"grid.png");
+            grid->loadBlackPicture(SOURCE_PATH+"grid_black.png");
+            grid->setPosition(GRID_X+j*grid->getW(), GRID_Y+i*grid->getH());
+            if(gridHeight == -1){
+                gridHeight = grid->getH();
+                gridWidth = grid->getW();
+            }
+            scene2.addGrids(grid);
+        }
+    }
+
+    // add suns
+
+    for(int i = 0 ;i < GRID_Y_N; ++i){
+        for(int j = 0; j < GRID_X_N; ++j){
+            Sun* sun = new Sun();
+            sun->loadPicture(SOURCE_PATH+"sun.png", SOURCE_PATH+"sun.png");
+            sun->setPosition(GRID_X+j*gridWidth, GRID_Y+i*gridHeight);
+            //std::cout << "[Debug] " << sun->x << " " << sun->y << std::endl;
+            scene2.addSun(sun);
+        }
+    }
+
+    // test add charactor
+    NormalZombie* nz0 = new NormalZombie(GRID_X+gridWidth*10, GRID_Y+gridHeight*1);
+    scene2.addZombie(nz0);
+
+    SunFlower* sf0 = new SunFlower(GRID_X+gridWidth*0, GRID_Y+gridHeight*0);
+    scene2.addPlant(sf0);
+
+    PeaShooter* ps0 = new PeaShooter(GRID_X+gridWidth*9, GRID_Y+gridHeight*1);
+    scene2.addPlant(ps0);
 
 }
 
@@ -38,7 +101,7 @@ void MainLoopThread::run(){
         if(isStop){
             break;
         }
-        MYTOOL::waitMSec(20);
+        MYTOOL::waitMSec(1000/PFS);
     }
     //isDone();
 }
@@ -96,4 +159,12 @@ void MainLoopThread::playButtonRelease(){
 void MainLoopThread::exitButtonRelease(){
     std::cout << "exit" << std::endl;
     myExit();
+}
+
+void MainLoopThread::peaShooterButtonPush(){
+    mouseImage = peashooterButton->getPicture();
+}
+
+void MainLoopThread::peaShooterButtonRelease(){
+    mouseImage = &mouseImageDefault;
 }

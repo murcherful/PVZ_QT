@@ -4,35 +4,37 @@
 #include <QObject>
 
 #include "mypicture.h"
+#include "myobject.h"
+#include "mytool.h"
 #include <string>
 #include <cmath>
 #include <string>
 
-class MyButton : public QObject
+class MyButton : public MyObject
 {
     Q_OBJECT
 public:
-    explicit MyButton(QObject *parent = nullptr);
+    MyButton();
 
-    int x, y, w, h;
+    //int x, y, w, h;
     int valible;
     int active;
     int isPush;
-    std::string name;
+    //std::string name;
 
     MyPicture pictureNormal;
     MyPicture picturePush;
 
-    void setName(const std::string name);
-    void setPostion(int x, int y);
-    void loadPicture(const std::string pathNormal, const std::string pathPush);
+    //virtual void setPostion(int x, int y);
+    virtual void loadPicture(const std::string pathNormal, const std::string pathPush);
     void update();
     void draw(cv::Mat &image);
-    void push();
-    void release();
-    bool isIn(int x, int y);
-    void setActive();
-    void setDeactive();
+    virtual void push();
+    virtual void release();
+    virtual bool isIn(int x, int y);
+    virtual void setActive();
+    virtual void setDeactive();
+    virtual MyPicture* getPicture();
 
 signals:
     void pushed();
@@ -44,7 +46,7 @@ public slots:
 class CooldownButton: public MyButton{
 public:
     int coolDownTime;
-    int coolDonwCount;
+    int coolDownCount;
     std::vector<std::string> infos;
 
     CooldownButton();
@@ -53,6 +55,27 @@ public:
     void update();
     void draw(cv::Mat &image);
     void release();
+};
+
+#define GEN_SUN_PRE (PFS*200)
+
+class Sun: public MyButton{
+    Q_OBJECT
+public:
+
+    int sunNumber;
+
+    Sun();
+    void update();
+    void draw(cv::Mat &image);
+    void release();
+
+signals:
+    void getSun(int n);
+
+public slots:
+    void addSun(int n);
+    void removeSun();
 };
 
 #endif // MYBUTTON_H
