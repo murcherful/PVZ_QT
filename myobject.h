@@ -52,6 +52,7 @@ public slots:
 class Charactor : public MyObject{
     Q_OBJECT
 public:
+    int gY;
 
     bool attackStart;
     int attackCount;
@@ -63,8 +64,11 @@ public:
     int attackSpeed;
 
     Charactor();
+    void setPosition(int x, int y);
     void update();
     void draw(cv::Mat &image);
+    virtual void setGY(int gY);
+    virtual int getGY();
     virtual void setAttackAttributions(int hp, int attack, int defense, int attackSpeed);
     virtual void defend(int objAttack);
     virtual bool getIsAttack();
@@ -97,22 +101,24 @@ public:
 
 signals:
     void genBullet(int x, int y);
-    void genSun();
+    void genSun(int n);
 
 };
 
 class Zombie : public Charactor{
     Q_OBJECT
 public:
-    int speed;
+    double speed;
+    double rx;
 
-    int speedCopy;
+    double speedCopy;
     int moveCount;
     int slowDownCount;
     bool isInteractive;
 
     Zombie();
-    virtual void setZombieAttributions(int speed);
+    void setPosition(int x, int y);
+    virtual void setZombieAttributions(double speed);
     void update();
     //void draw(cv::Mat &image);
     virtual void interactive(Plant* p);
@@ -149,7 +155,7 @@ public:
     int genSunCount;
     int genSunSpeed;
 
-    SunFlower(int tx, int ty);
+    SunFlower();
     //~SunFlower();
     void update();
 };
@@ -165,7 +171,7 @@ public:
 class PeaShooter:public Plant{
     Q_OBJECT
 public:
-    PeaShooter(int tx, int ty);
+    PeaShooter();
     //~PeaShooter();
 };
 
@@ -173,13 +179,13 @@ public:
 #define NORMALZOMBIE_HP             180
 #define NORMALZOMBIE_ATTACK         50
 #define NORMALZOMBIE_DEFENSE        50
-#define NORMALZOMBIE_ATTACK_SPEED   30
-#define NORMALZOMBIE_SPEED          (PFS/50)
+#define NORMALZOMBIE_ATTACK_SPEED   (PFS)
+#define NORMALZOMBIE_SPEED          (PFS/100.0)
 
 class NormalZombie:public Zombie{
     Q_OBJECT
 public:
-    NormalZombie(int tx, int ty);
+    NormalZombie();
     //~NormalZombie();
 };
 
@@ -190,7 +196,7 @@ public:
 class PeaBullet:public Bullet{
     Q_OBJECT
 public:
-    PeaBullet(int tx, int ty);
+    PeaBullet();
     //~PeaBullet();
 };
 

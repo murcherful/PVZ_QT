@@ -64,6 +64,8 @@ public slots:
 
     void peaShooterButtonRelease();
 
+    void AddPeaBullet(int x, int y);
+
 };
 
 #endif // MAINLOOPTHREAD_H

@@ -57,7 +57,7 @@ public:
     void release();
 };
 
-#define GEN_SUN_PRE (PFS*200)
+#define GEN_SUN_PRE (PFS*500)
 
 class Sun: public MyButton{
     Q_OBJECT

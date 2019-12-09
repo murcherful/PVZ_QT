@@ -83,6 +83,14 @@ Charactor::Charactor(){
     isAttack = 0;
 }
 
+void Charactor::setGY(int gY){
+    this->gY = gY;
+}
+
+int Charactor::getGY(){
+    return gY;
+}
+
 void Charactor::setAttackAttributions(int hp, int attack, int defense, int attackSpeed){
     this->hp = hp;
     this->attack = attack;
@@ -113,6 +121,11 @@ bool Charactor::getIsAttack(){
     else{
         return 0;
     }
+}
+
+void Charactor::setPosition(int x, int y){
+    MyObject::setPosition(x, y);
+    gY = (y - GRID_Y)/gridHeight;
 }
 
 int Charactor::getAttack(){
@@ -190,20 +203,22 @@ MyPicture* Plant::getpicture(){
 void Plant::update(){
     Charactor::update();
     if(hasBullet && getIsAttack()){
-        genBullet(x, y);
+        genBullet(x+getW(), y);
+        std::cout << "[Debug]: shoot" << std::endl;
+        stopAttack();
     }
 }
 
 void Plant::interactive(Zombie *z){
     if(getHasBullet()){
-        if(getY() == z->getY() && getX() <= z->getX()){
+        if(getGY() == z->getGY() && getX() <= z->getX()){
             if(!getIsAttackStart()){
                 startAttack();
             }
         }
     }
     else if(attack != 0){
-        if(getY() == z->getY() && getX()+getW() >= z->getX() && getX() <= z->getX()){
+        if(getGY() == z->getGY() && getX()+getW() >= z->getX() && getX() <= z->getX()){
             if(!getIsAttackStart()){
                 startAttack();
             }
@@ -221,38 +236,51 @@ Zombie::Zombie(){
     isInteractive = 0;
 }
 
-void Zombie::setZombieAttributions(int speed){
+void Zombie::setZombieAttributions(double speed){
     this->speed = speed;
     this->speedCopy = speed;
 }
 
+void Zombie::setPosition(int x, int y){
+    Charactor::setPosition(x, y);
+    rx = x;
+}
+
 void Zombie::update(){
     Charactor::update();
-    if(!isInteractive){
-        stopAttack();
-    }
-    if(moveCount >= speed-1){
+
+    /*
+    if(moveCount >= speed){
         x--;
         moveCount = 0;
     }
-    else if(slowDownCount != 0){
+    */
+    if(slowDownCount != 0){
         slowDownCount--;
     }
-    else if(!Charactor::getIsAttackStart()){
-        moveCount++;
+    else if(!Charactor::getIsAttackStart()&&attackCount!=1){
+        //moveCount++;
+        rx -= speed;
+        x = rx;
+    }
+    if(!isInteractive){
+        attackCount = 0;
+        stopAttack();
     }
     isInteractive = 0;
 }
 
 
 void Zombie::interactive(Plant* p){
-    if(p->getIsZombieValid() && getY() == p->getY() && (p->getX()+p->getW() >= getX() && p->getX() <= getX())){
+    if(p->getIsZombieValid() && getGY() == p->getGY() && (p->getX()+p->getW() >= getX() && p->getX() <= getX())){
         isInteractive = 1;
         if(!getIsAttackStart()){
             startAttack();
+            //std::cout << "["
         }
         else if(getIsAttack()){
             p->defend(getAttack());
+            //std::cout << "[Debug]: attack" << std::endl;
             stopAttack();
         }
     }
@@ -309,14 +337,14 @@ void Bullet::interactive(Zombie* z){
     if(isDead()){
         return;
     }
-    if(z->getY()+1 == getY() && getX()+getW() >= z->getX()){
+    if(z->getGY() == getGY() && getX()+getW() >= z->getX()){
         z->defend(attack);
         hp = 0;
     }
 }
 
-SunFlower::SunFlower(int tx, int ty){
-    setPosition(tx, ty);
+SunFlower::SunFlower(){
+    setName("SunFlower");
     loadPicture(SOURCE_PATH+"SunFlower.png");
     setAttackAttributions(SUNFLOWER_HP, SUNFLOWER_ATTACK, SUNFLOWER_DEFENSE, SUNFLOWER_ATTACK_SPEED);
     setPlantAttributions(SUNFLOWER_NEED_SUN_NUMBER, SUNFLOWER_COOLDOWN_TIME, 1, 0);
@@ -327,28 +355,27 @@ SunFlower::SunFlower(int tx, int ty){
 void SunFlower::update(){
     Charactor::update();
     if(genSunCount == 1){
-        genSun();
+        genSun(1);
     }
     genSunCount = (genSunCount+1)%genSunSpeed;
 }
 
-PeaShooter::PeaShooter(int tx, int ty){
-    setPosition(tx, ty);
+PeaShooter::PeaShooter(){
+    setName("PeaShooter");
     loadPicture(SOURCE_PATH+"PeaShooter.png");
     setAttackAttributions(PEASHOOTER_HP, PEASHOOTER_ATTACK, PEASHOOTER_DEFENSE, PEASHOOTER_ATTACK_SPEED);
     setPlantAttributions(PEASHOOTER_NEED_SUN_NUMBER, PEASHOOTER_COOLDOWN_TIME, 1, 1);
 }
 
-NormalZombie::NormalZombie(int tx, int ty){
-    setPosition(tx, ty);
+NormalZombie::NormalZombie(){
     setName("Normal Zombie");
     loadPicture(SOURCE_PATH+"NormalZombie.png");
     setAttackAttributions(NORMALZOMBIE_HP, NORMALZOMBIE_ATTACK, NORMALZOMBIE_DEFENSE, NORMALZOMBIE_ATTACK_SPEED);
     setZombieAttributions(NORMALZOMBIE_SPEED);
 }
 
-PeaBullet::PeaBullet(int tx, int ty){
-    setPosition(tx, ty);
+PeaBullet::PeaBullet(){
+    setName("PeaBullet");
     loadPicture(SOURCE_PATH+"PeaBullet.png");
     setAttackAttributions(PEABULLET_ATTACK);
     setBulletAttributions(PEABULLET_SPEED);

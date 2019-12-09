@@ -83,13 +83,25 @@ MainLoopThread::MainLoopThread(QLabel* label)
     }
 
     // test add charactor
-    NormalZombie* nz0 = new NormalZombie(GRID_X+gridWidth*10, GRID_Y+gridHeight*1);
+    NormalZombie* nz0 = new NormalZombie();
+    nz0->setPosition(GRID_X+gridWidth*10, GRID_Y+gridHeight*1);
     scene2.addZombie(nz0);
 
-    SunFlower* sf0 = new SunFlower(GRID_X+gridWidth*0, GRID_Y+gridHeight*0);
+    SunFlower* sf0 = new SunFlower();
+    int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
+    int sfY = GRID_Y+gridHeight*0+gridHeight/2-sf0->getH()/2;
+    std::cout << "[Debug]: " << sfX << " " << sfY << std::endl;
+    sf0->setPosition(sfX, sfY);
+    int sX = (sf0->getX()-GRID_X)/gridWidth;
+    int sY = (sf0->getY()-GRID_Y)/gridHeight;
+    connect(sf0, &SunFlower::genSun, scene2.suns[sY*GRID_X+sX], &Sun::addSun);
     scene2.addPlant(sf0);
 
-    PeaShooter* ps0 = new PeaShooter(GRID_X+gridWidth*9, GRID_Y+gridHeight*1);
+    PeaShooter* ps0 = new PeaShooter();
+    int psX = GRID_X+gridWidth*8+gridWidth/2-ps0->getW()/2;
+    int psY = GRID_Y+gridHeight*1+gridHeight/2-ps0->getH()/2;
+    ps0->setPosition(psX, psY);
+    connect(ps0, &PeaShooter::genBullet, this, &MainLoopThread::AddPeaBullet);
     scene2.addPlant(ps0);
 
 }
@@ -167,4 +179,10 @@ void MainLoopThread::peaShooterButtonPush(){
 
 void MainLoopThread::peaShooterButtonRelease(){
     mouseImage = &mouseImageDefault;
+}
+
+void MainLoopThread::AddPeaBullet(int x, int y){
+    PeaBullet* pb = new PeaBullet();
+    pb->setPosition(x, y);
+    scene2.addBullet(pb);
 }
