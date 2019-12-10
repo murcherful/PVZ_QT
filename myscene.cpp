@@ -1,5 +1,8 @@
 #include "myscene.h"
 
+extern int gridWidth;
+extern int gridHeight;
+
 MyScene::MyScene()
 {
     isPush = 0;
@@ -61,6 +64,11 @@ PlayScene::PlayScene(){
     shopX = 100;
     shopY = 20;
     shopN = 8;
+    for(int i = 0; i < GRID_Y_N; ++i){
+        for(int j = 0; j < GRID_X_N; ++j){
+            plantFlags[i][j] = 0;
+        }
+    }
 }
 
 void PlayScene::addCooldownButton(CooldownButton *cooldownButton){
@@ -117,7 +125,13 @@ void PlayScene::draw(cv::Mat &image){
     }
 }
 
-void PlayScene::addPlant(Plant *p){
+void PlayScene::addPlant(Plant *p, int x, int y){
+    if(plantFlags[y][x]){
+        return;
+    }
+    int pX = GRID_X+gridWidth*x+gridWidth/2-p->getW()/2;
+    int pY = GRID_Y+gridHeight*y+gridHeight/2-p->getH()/2;
+    p->setPosition(pX, pY);
     charactors.push_back(p);
     plants.push_back(p);
 }
@@ -145,8 +159,11 @@ void PlayScene::clear(){
     std::vector<Plant*>::iterator i1 = plants.begin();
     while(i1 != plants.end()){
         if((*i1)->isDead()){
+            int gx = ((*i1)->getX() - GRID_X)/gridWidth;
+            int gy = ((*i1)->getY() - GRID_Y)/gridHeight;
             delete *i1;
             i1 = plants.erase(i1);
+            plantFlags[gy][gx] = 0;
         }
         else{
             i1++;
@@ -172,4 +189,8 @@ void PlayScene::clear(){
             i3++;
         }
     }
+}
+
+Sun* PlayScene::getSun(int x, int y){
+    return suns[y*GRID_X_N+x];
 }

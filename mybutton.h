@@ -44,17 +44,28 @@ public slots:
 };
 
 class CooldownButton: public MyButton{
+    Q_OBJECT
 public:
     int coolDownTime;
     int coolDownCount;
+    int cost;
+    int hasEnoughSun;
     std::vector<std::string> infos;
 
     CooldownButton();
     void addInfo(std::string info);
     void setCooldownTime(int t);
+    void setCost(int cost);
     void update();
     void draw(cv::Mat &image);
+    void push();
     void release();
+signals:
+    void cooldownButtonFirstPush(MyPicture* p);
+    void cooldownButtonMyRelease(int cost);
+
+public slots:
+    void checkSun(int sun);
 };
 
 #define GEN_SUN_PRE (PFS*500)

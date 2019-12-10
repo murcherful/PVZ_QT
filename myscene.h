@@ -37,14 +37,16 @@ public:
     std::vector<Plant*> plants;
     std::vector<Zombie*> zombies;
     std::vector<Bullet*> bullets;
+    bool plantFlags[GRID_Y_N][GRID_X_N];
 
     PlayScene();
     void addCooldownButton(CooldownButton* cooldownButton);
     void addSun(Sun* sun);
+    Sun* getSun(int x, int y);
     void addGrids(Grid* grid);
     void update();
     void draw(cv::Mat &image);
-    void addPlant(Plant* p);
+    void addPlant(Plant* p, int x, int y);
     void addZombie(Zombie* z);
     void addBullet(Bullet* b);
     void clear();

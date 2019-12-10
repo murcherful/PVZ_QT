@@ -15,6 +15,10 @@ void MyObject::setName(const std::string name){
     this->name = name;
 }
 
+std::string MyObject::getName(){
+    return name;
+}
+
 void MyObject::setPosition(int x, int y){
     this->x = x;
     this->y = y;
@@ -171,6 +175,7 @@ Plant::Plant(){
     needSunNumber = 0;
     cooldownTime = 0;
     hasBullet = 0;
+    shootY = 0;
 }
 
 void Plant::setPlantAttributions(int needSunNumber, int cooldownTime, bool isZombieValid, bool hasBullet){
@@ -203,10 +208,14 @@ MyPicture* Plant::getpicture(){
 void Plant::update(){
     Charactor::update();
     if(hasBullet && getIsAttack()){
-        genBullet(x+getW(), y);
-        std::cout << "[Debug]: shoot" << std::endl;
+        genBullet(x+getW(), y+shootY);
+        //std::cout << "[Debug]: shoot" << std::endl;
         stopAttack();
     }
+}
+
+void Plant::setShootY(int shootY){
+    this->shootY = shootY;
 }
 
 void Plant::interactive(Zombie *z){
@@ -362,6 +371,7 @@ void SunFlower::update(){
 
 PeaShooter::PeaShooter(){
     setName("PeaShooter");
+    setShootY(PEASHOOTER_SHOOT_Y);
     loadPicture(SOURCE_PATH+"PeaShooter.png");
     setAttackAttributions(PEASHOOTER_HP, PEASHOOTER_ATTACK, PEASHOOTER_DEFENSE, PEASHOOTER_ATTACK_SPEED);
     setPlantAttributions(PEASHOOTER_NEED_SUN_NUMBER, PEASHOOTER_COOLDOWN_TIME, 1, 1);

@@ -21,6 +21,7 @@ public:
     virtual void loadPicture(const std::string path);
     virtual void update();
     virtual void draw(cv::Mat &image);
+    virtual std::string getName();
     virtual int getX();
     virtual int getY();
     virtual int getW();
@@ -88,10 +89,12 @@ public:
     int needSunNumber;
     int cooldownTime;
     bool hasBullet;
+    int shootY;
 
     Plant();
     void update();
     virtual void setPlantAttributions(int needSunNumber, int cooldownTime, bool isZombieValid, bool hasBullet);
+    virtual void setShootY(int shootY);
     virtual bool getIsZombieValid();
     virtual bool getHasBullet();
     virtual int getNeedSunNumbwr();
@@ -147,7 +150,7 @@ public:
 #define SUNFLOWER_DEFENSE         70
 #define SUNFLOWER_ATTACK_SPEED    10000
 #define SUNFLOWER_NEED_SUN_NUMBER 4
-#define SUNFLOWER_COOLDOWN_TIME   70
+#define SUNFLOWER_COOLDOWN_TIME   (PFS*7)
 
 class SunFlower : public Plant{
     Q_OBJECT
@@ -164,9 +167,10 @@ public:
 #define PEASHOOTER_HP              125
 #define PEASHOOTER_ATTACK          0
 #define PEASHOOTER_DEFENSE         50
-#define PEASHOOTER_ATTACK_SPEED    20
+#define PEASHOOTER_ATTACK_SPEED    (PFS*2)
 #define PEASHOOTER_NEED_SUN_NUMBER 8
-#define PEASHOOTER_COOLDOWN_TIME   100
+#define PEASHOOTER_COOLDOWN_TIME   (PFS*10)
+#define PEASHOOTER_SHOOT_Y         15
 
 class PeaShooter:public Plant{
     Q_OBJECT
@@ -180,7 +184,7 @@ public:
 #define NORMALZOMBIE_ATTACK         50
 #define NORMALZOMBIE_DEFENSE        50
 #define NORMALZOMBIE_ATTACK_SPEED   (PFS)
-#define NORMALZOMBIE_SPEED          (PFS/100.0)
+#define NORMALZOMBIE_SPEED          (1)
 
 class NormalZombie:public Zombie{
     Q_OBJECT
@@ -190,7 +194,7 @@ public:
 };
 
 
-#define PEABULLET_SPEED      2
+#define PEABULLET_SPEED      10
 #define PEABULLET_ATTACK     50
 
 class PeaBullet:public Bullet{

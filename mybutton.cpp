@@ -70,6 +70,8 @@ void MyButton::setDeactive(){
 CooldownButton::CooldownButton(){
     coolDownTime = 0;
     coolDownCount = 0;
+    cost = 0;
+    hasEnoughSun = 0;
 }
 
 void CooldownButton::addInfo(std::string info){
@@ -78,6 +80,10 @@ void CooldownButton::addInfo(std::string info){
 
 void CooldownButton::setCooldownTime(int t){
     coolDownTime = t;
+}
+
+void CooldownButton::setCost(int cost){
+    this->cost = cost;
 }
 
 void CooldownButton::update(){
@@ -104,10 +110,25 @@ void CooldownButton::draw(cv::Mat &image){
     }
 }
 
+void CooldownButton::push(){
+    MyButton::push();
+    cooldownButtonFirstPush(&pictureNormal);
+}
+
 void CooldownButton::release(){
     coolDownCount = coolDownTime;
     valible = 0;
     MyButton::release();
+    cooldownButtonMyRelease(cost);
+}
+
+void CooldownButton::checkSun(int sun){
+    if(sun >= cost){
+        hasEnoughSun = 1;
+    }
+    else{
+        hasEnoughSun = 0;
+    }
 }
 
 Sun::Sun(){

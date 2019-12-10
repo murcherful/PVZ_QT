@@ -36,15 +36,19 @@ private:
     int mouseY;
     MyPicture *mouseImage;
     MyPicture mouseImageDefault;
+    bool isMouseCenter;
 
     MyScene *currentScene;
     MyScene scene1;
     PlayScene scene2;
 
+    std::vector<Plant*> shopPlants;
+
     MyButton* playButton;
     MyButton* exitButton;
     MyButton* exitButtonSmall;
-    CooldownButton* peashooterButton;
+    //CooldownButton* peaShooterButton;
+    //CooldownButton* sunFloewerButton;
 
     void mainLoop();
 
@@ -60,9 +64,13 @@ public slots:
 
     void exitButtonRelease();
 
-    void peaShooterButtonPush();
+    //void peaShooterButtonPush();
 
-    void peaShooterButtonRelease();
+    //void peaShooterButtonRelease();
+
+    void cooldownButtonPush(MyPicture* p);
+
+    void cooldownButtonRelease(int cost);
 
     void AddPeaBullet(int x, int y);
 

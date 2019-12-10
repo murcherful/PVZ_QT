@@ -12,6 +12,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     this->mouseX = MW_W/2;
     this->mouseY = MW_H/2;
     mouseImageDefault.load(SOURCE_PATH+"mouseDefault.png", 1.0);
+    isMouseCenter = 0;
     mouseImage = &mouseImageDefault;
     // set scene
     currentScene = &scene1;
@@ -37,7 +38,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
 
     // load scene2 (play scene)
     // add buttons
-    // and add objects
+    // and add objects    
     scene2.load(SOURCE_PATH+"playScene.png");
     exitButtonSmall = new MyButton();
     exitButtonSmall->setName("exitButtonSmall");
@@ -46,15 +47,30 @@ MainLoopThread::MainLoopThread(QLabel* label)
     connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitButtonRelease);
     scene2.addButton(exitButtonSmall);
 
-    peashooterButton = new CooldownButton();
-    peashooterButton->setName("PeaShooterButton");
-    peashooterButton->loadPicture(SOURCE_PATH+"PeaShooter.png", SOURCE_PATH+"PeaShooter.png");
-    peashooterButton->setCooldownTime(PFS*10);
-    peashooterButton->addInfo("PeaShooter");
-    connect(peashooterButton, &CooldownButton::firstPush, this, &MainLoopThread::peaShooterButtonPush);
-    connect(peashooterButton, &CooldownButton::myRelease, this, &MainLoopThread::peaShooterButtonRelease);
-    scene2.addCooldownButton(peashooterButton);
+    // add buttons of shop
+    shopPlants.push_back(new SunFlower());
+    shopPlants.push_back(new PeaShooter());
 
+    for(int i = 0; i < shopPlants.size(); ++i){
+        CooldownButton* cooldownButton = new CooldownButton();
+        cooldownButton->setName(shopPlants[i]->getName()+"Button");
+        cooldownButton->loadPicture(shopPlants[i]->getpicture()->getPath(), shopPlants[i]->getpicture()->getPath());
+        cooldownButton->setCooldownTime(shopPlants[i]->getCooldownTime());
+        cooldownButton->addInfo(shopPlants[i]->getName());
+        connect(cooldownButton, &CooldownButton::cooldownButtonFirstPush, this, &MainLoopThread::cooldownButtonPush);
+        connect(cooldownButton, &CooldownButton::cooldownButtonMyRelease, this, &MainLoopThread::cooldownButtonRelease);
+        scene2.addCooldownButton(cooldownButton);
+    }
+    /*
+    peaShooterButton = new CooldownButton();
+    peaShooterButton->setName("PeaShooterButton");
+    peaShooterButton->loadPicture(SOURCE_PATH+"PeaShooter.png", SOURCE_PATH+"PeaShooter.png");
+    peaShooterButton->setCooldownTime(PFS*10);
+    peaShooterButton->addInfo("PeaShooter");
+    connect(peaShooterButton, &CooldownButton::firstPush, this, &MainLoopThread::peaShooterButtonPush);
+    connect(peaShooterButton, &CooldownButton::myRelease, this, &MainLoopThread::peaShooterButtonRelease);
+    scene2.addCooldownButton(peaShooterButton);
+    */
     // add grids
     for(int i = 0 ;i < GRID_Y_N; ++i){
         for(int j = 0; j < GRID_X_N; ++j){
@@ -88,21 +104,21 @@ MainLoopThread::MainLoopThread(QLabel* label)
     scene2.addZombie(nz0);
 
     SunFlower* sf0 = new SunFlower();
-    int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
-    int sfY = GRID_Y+gridHeight*0+gridHeight/2-sf0->getH()/2;
-    std::cout << "[Debug]: " << sfX << " " << sfY << std::endl;
-    sf0->setPosition(sfX, sfY);
-    int sX = (sf0->getX()-GRID_X)/gridWidth;
-    int sY = (sf0->getY()-GRID_Y)/gridHeight;
-    connect(sf0, &SunFlower::genSun, scene2.suns[sY*GRID_X+sX], &Sun::addSun);
-    scene2.addPlant(sf0);
+    //int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
+    //int sfY = GRID_Y+gridHeight*0+gridHeight/2-sf0->getH()/2;
+    //std::cout << "[Debug]: " << sfX << " " << sfY << std::endl;
+    //sf0->setPosition(sfX, sfY);
+    //int sX = (sf0->getX()-GRID_X)/gridWidth;
+    //int sY = (sf0->getY()-GRID_Y)/gridHeight;
+    connect(sf0, &SunFlower::genSun, scene2.getSun(0, 0), &Sun::addSun);
+    scene2.addPlant(sf0, 0, 0);
 
     PeaShooter* ps0 = new PeaShooter();
-    int psX = GRID_X+gridWidth*8+gridWidth/2-ps0->getW()/2;
-    int psY = GRID_Y+gridHeight*1+gridHeight/2-ps0->getH()/2;
-    ps0->setPosition(psX, psY);
+    //int psX = GRID_X+gridWidth*0+gridWidth/2-ps0->getW()/2;
+    //int psY = GRID_Y+gridHeight*1+gridHeight/2-ps0->getH()/2;
+    //ps0->setPosition(psX, psY);
     connect(ps0, &PeaShooter::genBullet, this, &MainLoopThread::AddPeaBullet);
-    scene2.addPlant(ps0);
+    scene2.addPlant(ps0, 0, 1);
 
 }
 
@@ -139,7 +155,18 @@ void MainLoopThread::mainLoop(){
 
     // draw mouse
     //cv::circle(image, cv::Point(mouseX, mouseY), 10, cv::Scalar(255, 0, 0), -1);
-    mouseImage->getPicture().copyTo(image(cv::Rect(std::min(mouseX, image.cols-mouseImage->width()), std::min(mouseY, image.rows-mouseImage->height()), mouseImage->width(), mouseImage->height())), mouseImage->getMask());
+    int tMouseX;
+    int tMouseY;
+    if(isMouseCenter){
+        tMouseX = mouseX-mouseImage->width()/2;
+        tMouseY = mouseY-mouseImage->height()/2;
+        mouseImage->getPicture().copyTo(image(cv::Rect(std::min(tMouseX, image.cols-mouseImage->width()), std::min(tMouseY, image.rows-mouseImage->height()), mouseImage->width(), mouseImage->height())), mouseImage->getMask());
+    }
+    else{
+        tMouseX = mouseX;
+        tMouseY = mouseY;
+        mouseImage->getPicture().copyTo(image(cv::Rect(std::min(tMouseX, image.cols-mouseImage->width()), std::min(tMouseY, image.rows-mouseImage->height()), mouseImage->width(), mouseImage->height())), mouseImage->getMask());
+    }
 
     QImage qimage = MYTOOL::mat2QImage(image);
     label->setPixmap(QPixmap::fromImage(qimage));
@@ -172,13 +199,25 @@ void MainLoopThread::exitButtonRelease(){
     std::cout << "exit" << std::endl;
     myExit();
 }
-
+/*
 void MainLoopThread::peaShooterButtonPush(){
-    mouseImage = peashooterButton->getPicture();
+    mouseImage = peaShooterButton->getPicture();
+    isMouseCenter = 1;
 }
 
 void MainLoopThread::peaShooterButtonRelease(){
     mouseImage = &mouseImageDefault;
+    isMouseCenter = 0;
+}
+*/
+void MainLoopThread::cooldownButtonPush(MyPicture *p){
+    mouseImage = p;
+    isMouseCenter = 0;
+}
+
+void MainLoopThread::cooldownButtonRelease(int cost){
+    mouseImage = &mouseImageDefault;
+    isMouseCenter = 0;
 }
 
 void MainLoopThread::AddPeaBullet(int x, int y){
