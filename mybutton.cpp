@@ -86,6 +86,10 @@ void CooldownButton::setCost(int cost){
     this->cost = cost;
 }
 
+void CooldownButton::setPlantName(std::string plantName){
+    this->plantName = plantName;
+}
+
 void CooldownButton::update(){
     if(coolDownCount>0){
         coolDownCount--;
@@ -119,7 +123,7 @@ void CooldownButton::release(){
     coolDownCount = coolDownTime;
     valible = 0;
     MyButton::release();
-    cooldownButtonMyRelease(cost);
+    cooldownButtonMyRelease(plantName);
 }
 
 void CooldownButton::checkSun(int sun){

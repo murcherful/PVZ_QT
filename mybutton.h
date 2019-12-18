@@ -51,18 +51,20 @@ public:
     int cost;
     int hasEnoughSun;
     std::vector<std::string> infos;
+    std::string plantName;
 
     CooldownButton();
     void addInfo(std::string info);
     void setCooldownTime(int t);
     void setCost(int cost);
+    void setPlantName(std::string plantName);
     void update();
     void draw(cv::Mat &image);
     void push();
     void release();
 signals:
     void cooldownButtonFirstPush(MyPicture* p);
-    void cooldownButtonMyRelease(int cost);
+    void cooldownButtonMyRelease(std::string name);
 
 public slots:
     void checkSun(int sun);

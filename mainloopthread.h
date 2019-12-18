@@ -38,6 +38,8 @@ private:
     MyPicture mouseImageDefault;
     bool isMouseCenter;
 
+    int sunN;
+
     MyScene *currentScene;
     MyScene scene1;
     PlayScene scene2;
@@ -51,6 +53,8 @@ private:
     //CooldownButton* sunFloewerButton;
 
     void mainLoop();
+
+    void addPlant(std::string plantName);
 
 signals:
     void myExit();
@@ -70,7 +74,7 @@ public slots:
 
     void cooldownButtonPush(MyPicture* p);
 
-    void cooldownButtonRelease(int cost);
+    void cooldownButtonRelease(std::string plantName);
 
     void AddPeaBullet(int x, int y);
 

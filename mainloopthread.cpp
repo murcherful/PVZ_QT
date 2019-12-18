@@ -57,6 +57,8 @@ MainLoopThread::MainLoopThread(QLabel* label)
         cooldownButton->loadPicture(shopPlants[i]->getpicture()->getPath(), shopPlants[i]->getpicture()->getPath());
         cooldownButton->setCooldownTime(shopPlants[i]->getCooldownTime());
         cooldownButton->addInfo(shopPlants[i]->getName());
+        cooldownButton->setCost(shopPlants[i]->getNeedSunNumbwr());
+        cooldownButton->setPlantName(shopPlants[i]->getGenCode());
         connect(cooldownButton, &CooldownButton::cooldownButtonFirstPush, this, &MainLoopThread::cooldownButtonPush);
         connect(cooldownButton, &CooldownButton::cooldownButtonMyRelease, this, &MainLoopThread::cooldownButtonRelease);
         scene2.addCooldownButton(cooldownButton);
@@ -215,8 +217,9 @@ void MainLoopThread::cooldownButtonPush(MyPicture *p){
     isMouseCenter = 0;
 }
 
-void MainLoopThread::cooldownButtonRelease(int cost){
+void MainLoopThread::cooldownButtonRelease(std::string plantName){
     mouseImage = &mouseImageDefault;
+
     isMouseCenter = 0;
 }
 
@@ -224,4 +227,8 @@ void MainLoopThread::AddPeaBullet(int x, int y){
     PeaBullet* pb = new PeaBullet();
     pb->setPosition(x, y);
     scene2.addBullet(pb);
+}
+
+void MainLoopThread::addPlant(std::string plantName){
+
 }

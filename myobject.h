@@ -90,6 +90,7 @@ public:
     int cooldownTime;
     bool hasBullet;
     int shootY;
+    std::string genCode;
 
     Plant();
     void update();
@@ -99,6 +100,7 @@ public:
     virtual bool getHasBullet();
     virtual int getNeedSunNumbwr();
     virtual int getCooldownTime();
+    virtual std::string getGenCode();
     virtual void interactive(Zombie* z);
     virtual MyPicture* getpicture();
 

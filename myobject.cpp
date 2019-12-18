@@ -193,6 +193,10 @@ bool Plant::getHasBullet(){
     return hasBullet;
 }
 
+std::string Plant::getGenCode(){
+    return genCode;
+}
+
 int Plant::getNeedSunNumbwr(){
     return needSunNumber;
 }
@@ -354,6 +358,7 @@ void Bullet::interactive(Zombie* z){
 
 SunFlower::SunFlower(){
     setName("SunFlower");
+    genCode = "SunFlower-Sun";
     loadPicture(SOURCE_PATH+"SunFlower.png");
     setAttackAttributions(SUNFLOWER_HP, SUNFLOWER_ATTACK, SUNFLOWER_DEFENSE, SUNFLOWER_ATTACK_SPEED);
     setPlantAttributions(SUNFLOWER_NEED_SUN_NUMBER, SUNFLOWER_COOLDOWN_TIME, 1, 0);
@@ -371,6 +376,7 @@ void SunFlower::update(){
 
 PeaShooter::PeaShooter(){
     setName("PeaShooter");
+    genCode = "PeaShooter-PeaBullet";
     setShootY(PEASHOOTER_SHOOT_Y);
     loadPicture(SOURCE_PATH+"PeaShooter.png");
     setAttackAttributions(PEASHOOTER_HP, PEASHOOTER_ATTACK, PEASHOOTER_DEFENSE, PEASHOOTER_ATTACK_SPEED);
@@ -378,7 +384,7 @@ PeaShooter::PeaShooter(){
 }
 
 NormalZombie::NormalZombie(){
-    setName("Normal Zombie");
+    setName("NormalZombie");
     loadPicture(SOURCE_PATH+"NormalZombie.png");
     setAttackAttributions(NORMALZOMBIE_HP, NORMALZOMBIE_ATTACK, NORMALZOMBIE_DEFENSE, NORMALZOMBIE_ATTACK_SPEED);
     setZombieAttributions(NORMALZOMBIE_SPEED);

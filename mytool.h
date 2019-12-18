@@ -4,6 +4,7 @@
 #include <opencv2/core/utility.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/opencv.hpp>
 #include <QImage>
 #include <QSize>
 #include <QCoreApplication>
@@ -27,7 +28,7 @@
 #define GRID_Y      150
 #define GRID_X_S    0       // the space between two grid in x direction
 #define GRID_Y_S    0       // the space between two grid in y direction
-#define SOURCE_PATH std::string("/home/murcherful/Qt/Project/PVZ/picture/")
+#define SOURCE_PATH std::string("D:\\WorkSpace\\Qt\\PVZ\\picture\\")
 namespace MYTOOL {
     QImage mat2QImage(cv::Mat m);
     QImage myResiezQImage(QImage img, QSize size);
