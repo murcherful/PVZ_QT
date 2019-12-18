@@ -57,6 +57,7 @@ public:
     void addInfo(std::string info);
     void setCooldownTime(int t);
     void setCost(int cost);
+    int getCost();
     void setPlantName(std::string plantName);
     void update();
     void draw(cv::Mat &image);

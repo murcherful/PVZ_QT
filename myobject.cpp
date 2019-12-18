@@ -97,6 +97,7 @@ int Charactor::getGY(){
 
 void Charactor::setAttackAttributions(int hp, int attack, int defense, int attackSpeed){
     this->hp = hp;
+    this->hpCopy = hp;
     this->attack = attack;
     this->defense = defense;
     this->attackSpeed = attackSpeed;
@@ -153,8 +154,13 @@ void Charactor::stopAttack(){
 void Charactor::draw(cv::Mat &image){
     MyObject::draw(image);
     std::stringstream hpString;
-    hpString << name <<  " : " << hp;
-    cv::putText(image, hpString.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
+    hpString << name;
+    int baseLine = 0;
+    cv::Size textSize = cv::getTextSize(hpString.str(), cv::FONT_HERSHEY_SIMPLEX, 0.25, 1, &baseLine);
+    cv::rectangle(image, cv::Point(x, y-textSize.height), cv::Point(x+textSize.width, y), cv::Scalar(200, 200, 200), -1);
+    cv::rectangle(image, cv::Point(x, y-textSize.height), cv::Point(x+textSize.width*((double)hp/(double)hpCopy), y), cv::Scalar(106, 106, 255), -1);
+    cv::rectangle(image, cv::Point(x-1, y-textSize.height-1), cv::Point(x+textSize.width+1, y+1), cv::Scalar(0, 0, 0), 1);
+    cv::putText(image, hpString.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.25, cv::Scalar(0, 0, 0), 1);
 }
 
 bool Charactor::getIsAttackStart(){
@@ -191,10 +197,6 @@ bool Plant::getIsZombieValid(){
 
 bool Plant::getHasBullet(){
     return hasBullet;
-}
-
-std::string Plant::getGenCode(){
-    return genCode;
 }
 
 int Plant::getNeedSunNumbwr(){
@@ -358,7 +360,6 @@ void Bullet::interactive(Zombie* z){
 
 SunFlower::SunFlower(){
     setName("SunFlower");
-    genCode = "SunFlower-Sun";
     loadPicture(SOURCE_PATH+"SunFlower.png");
     setAttackAttributions(SUNFLOWER_HP, SUNFLOWER_ATTACK, SUNFLOWER_DEFENSE, SUNFLOWER_ATTACK_SPEED);
     setPlantAttributions(SUNFLOWER_NEED_SUN_NUMBER, SUNFLOWER_COOLDOWN_TIME, 1, 0);
@@ -376,7 +377,6 @@ void SunFlower::update(){
 
 PeaShooter::PeaShooter(){
     setName("PeaShooter");
-    genCode = "PeaShooter-PeaBullet";
     setShootY(PEASHOOTER_SHOOT_Y);
     loadPicture(SOURCE_PATH+"PeaShooter.png");
     setAttackAttributions(PEASHOOTER_HP, PEASHOOTER_ATTACK, PEASHOOTER_DEFENSE, PEASHOOTER_ATTACK_SPEED);

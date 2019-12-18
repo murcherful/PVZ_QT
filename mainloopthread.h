@@ -36,6 +36,7 @@ private:
     int mouseY;
     MyPicture *mouseImage;
     MyPicture mouseImageDefault;
+    MyPicture shovelPicture;
     bool isMouseCenter;
 
     int sunN;
@@ -49,12 +50,13 @@ private:
     MyButton* playButton;
     MyButton* exitButton;
     MyButton* exitButtonSmall;
+    MyButton* shovelButton;
     //CooldownButton* peaShooterButton;
     //CooldownButton* sunFloewerButton;
 
     void mainLoop();
 
-    void addPlant(std::string plantName);
+    bool addPlant(std::string plantName);
 
 signals:
     void myExit();
@@ -77,6 +79,9 @@ public slots:
     void cooldownButtonPush(MyPicture* p);
 
     void cooldownButtonRelease(std::string plantName, CooldownButton* b);
+
+    void shovelButtonPush();
+    void shovelButtonRelease();
 
     void addPeaBullet(int x, int y);
 

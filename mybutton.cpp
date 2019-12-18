@@ -147,6 +147,10 @@ void CooldownButton::checkSun(int sun){
     }
 }
 
+int CooldownButton::getCost(){
+    return cost;
+}
+
 Sun::Sun(){
     sunNumber = 0;
 }

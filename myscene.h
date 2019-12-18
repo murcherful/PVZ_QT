@@ -53,6 +53,7 @@ public:
     void addZombie(Zombie* z);
     void addBullet(Bullet* b);
     void clear();
+    bool isGridValid(int x, int y);
 
 //public slots:
     void checkSun(int n);

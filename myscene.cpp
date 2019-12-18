@@ -130,6 +130,7 @@ void PlayScene::draw(cv::Mat &image){
 
     std::stringstream ss;
     ss << sunN;
+    //cv::rectangle(image, cv::Point(sunX, sunY), cv::Point(sunX+sunPicture.width(), sunY+sunPicture.height()), cv::Scalar(255, 255, 255), -1);
     cv::rectangle(image, cv::Point(sunX, sunY), cv::Point(sunX+sunPicture.width(), sunY+sunPicture.height()), cv::Scalar(20, 105, 139), 3);
     sunPicture.draw(sunX, sunY, image);
     cv::putText(image, ss.str(), cv::Point(sunX, sunY+sunPicture.height()+25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
@@ -144,6 +145,7 @@ void PlayScene::addPlant(Plant *p, int x, int y){
     p->setPosition(pX, pY);
     charactors.push_back(p);
     plants.push_back(p);
+    plantFlags[y][x] = 1;
 }
 
 void PlayScene::addZombie(Zombie *z){
@@ -207,4 +209,8 @@ Sun* PlayScene::getSun(int x, int y){
 
 void PlayScene::checkSun(int n){
     sunN = n;
+}
+
+bool PlayScene::isGridValid(int x, int y){
+    return plantFlags[y][x];
 }
