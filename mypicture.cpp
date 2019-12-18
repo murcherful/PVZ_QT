@@ -8,9 +8,10 @@ MyPicture::MyPicture()
 void MyPicture::load(const std::string path, double scale){
     this->scale = scale;
     cv::Mat pTemp = cv::imread(path);
-    cv::resize(pTemp, p, cv::Size((double)pTemp.cols*scale, (double)pTemp.rows*scale));
-    cv::Mat mTemp = cv::imread(path, cv::IMREAD_GRAYSCALE);
-    cv::resize(mTemp, m, cv::Size((double)mTemp.cols*scale, (double)mTemp.rows*scale));
+    cv::resize(pTemp, p, cv::Size((double)pTemp.cols*scale, (double)pTemp.rows*scale), cv::INTER_NEAREST);
+    //cv::Mat mTemp = cv::imread(path, cv::IMREAD_GRAYSCALE);
+    //cv::resize(mTemp, m, cv::Size((double)mTemp.cols*scale, (double)mTemp.rows*scale), cv::INTER_NEAREST);
+    cv::cvtColor(p, m, cv::COLOR_BGR2GRAY);
     this->path = path;
 }
 

@@ -154,7 +154,7 @@ void Charactor::draw(cv::Mat &image){
     MyObject::draw(image);
     std::stringstream hpString;
     hpString << name <<  " : " << hp;
-    cv::putText(image, hpString.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+    cv::putText(image, hpString.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
 }
 
 bool Charactor::getIsAttackStart(){

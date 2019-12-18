@@ -11,6 +11,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     this->isStop = 0;
     this->mouseX = MW_W/2;
     this->mouseY = MW_H/2;
+    this->sunN = 7;
     mouseImageDefault.load(SOURCE_PATH+"mouseDefault.png", 1.0);
     isMouseCenter = 0;
     mouseImage = &mouseImageDefault;
@@ -46,6 +47,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     exitButtonSmall->loadPicture(SOURCE_PATH+"exitButtonSmall.png", SOURCE_PATH+"exitButtonSmall_push.png");
     connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitButtonRelease);
     scene2.addButton(exitButtonSmall);
+    connect(this, &MainLoopThread::changeSun, &scene2, &PlayScene::checkSun);
 
     // add buttons of shop
     shopPlants.push_back(new SunFlower());
@@ -57,12 +59,17 @@ MainLoopThread::MainLoopThread(QLabel* label)
         cooldownButton->loadPicture(shopPlants[i]->getpicture()->getPath(), shopPlants[i]->getpicture()->getPath());
         cooldownButton->setCooldownTime(shopPlants[i]->getCooldownTime());
         cooldownButton->addInfo(shopPlants[i]->getName());
+        std::stringstream cost_ss;
+        cost_ss << shopPlants[i]->getNeedSunNumbwr();
+        cooldownButton->addInfo(cost_ss.str());
         cooldownButton->setCost(shopPlants[i]->getNeedSunNumbwr());
         cooldownButton->setPlantName(shopPlants[i]->getGenCode());
         connect(cooldownButton, &CooldownButton::cooldownButtonFirstPush, this, &MainLoopThread::cooldownButtonPush);
         connect(cooldownButton, &CooldownButton::cooldownButtonMyRelease, this, &MainLoopThread::cooldownButtonRelease);
+        connect(this, &MainLoopThread::changeSun, cooldownButton, &CooldownButton::checkSun);
         scene2.addCooldownButton(cooldownButton);
     }
+    changeSun(sunN);
     /*
     peaShooterButton = new CooldownButton();
     peaShooterButton->setName("PeaShooterButton");
@@ -96,6 +103,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
             sun->loadPicture(SOURCE_PATH+"sun.png", SOURCE_PATH+"sun.png");
             sun->setPosition(GRID_X+j*gridWidth, GRID_Y+i*gridHeight);
             //std::cout << "[Debug] " << sun->x << " " << sun->y << std::endl;
+            connect(sun, &Sun::getSun, this, &MainLoopThread::addSun);
             scene2.addSun(sun);
         }
     }
@@ -119,7 +127,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     //int psX = GRID_X+gridWidth*0+gridWidth/2-ps0->getW()/2;
     //int psY = GRID_Y+gridHeight*1+gridHeight/2-ps0->getH()/2;
     //ps0->setPosition(psX, psY);
-    connect(ps0, &PeaShooter::genBullet, this, &MainLoopThread::AddPeaBullet);
+    connect(ps0, &PeaShooter::genBullet, this, &MainLoopThread::addPeaBullet);
     scene2.addPlant(ps0, 0, 1);
 
 }
@@ -217,13 +225,13 @@ void MainLoopThread::cooldownButtonPush(MyPicture *p){
     isMouseCenter = 0;
 }
 
-void MainLoopThread::cooldownButtonRelease(std::string plantName){
+void MainLoopThread::cooldownButtonRelease(std::string plantName, CooldownButton* b){
     mouseImage = &mouseImageDefault;
 
     isMouseCenter = 0;
 }
 
-void MainLoopThread::AddPeaBullet(int x, int y){
+void MainLoopThread::addPeaBullet(int x, int y){
     PeaBullet* pb = new PeaBullet();
     pb->setPosition(x, y);
     scene2.addBullet(pb);
@@ -231,4 +239,9 @@ void MainLoopThread::AddPeaBullet(int x, int y){
 
 void MainLoopThread::addPlant(std::string plantName){
 
+}
+
+void MainLoopThread::addSun(int n){
+    sunN += n;
+    changeSun(sunN);
 }

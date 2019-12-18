@@ -6,7 +6,7 @@
 #include "mypicture.h"
 #include <vector>
 
-class MyScene
+class MyScene:public MyObject
 {
 public:
     MyScene();
@@ -26,10 +26,13 @@ public:
 };
 
 class PlayScene: public MyScene{
+    Q_OBJECT
 public:
     int shopX;
     int shopY;
     int shopN;
+    int sunN;
+    MyPicture sunPicture;
     std::vector<CooldownButton*> cooldownButtons;
     std::vector<Grid*> grids;
     std::vector<Sun*> suns;
@@ -50,6 +53,9 @@ public:
     void addZombie(Zombie* z);
     void addBullet(Bullet* b);
     void clear();
+
+//public slots:
+    void checkSun(int n);
 };
 
 #endif // MYSCENE_H

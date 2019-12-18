@@ -25,7 +25,7 @@
 #define GRID_X_N    11
 #define GRID_Y_N    5
 #define GRID_X      50
-#define GRID_Y      150
+#define GRID_Y      200
 #define GRID_X_S    0       // the space between two grid in x direction
 #define GRID_Y_S    0       // the space between two grid in y direction
 #define SOURCE_PATH std::string("D:\\WorkSpace\\Qt\\PVZ\\picture\\")

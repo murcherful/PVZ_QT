@@ -61,14 +61,16 @@ void MyScene::addButton(MyButton* button){
 }
 
 PlayScene::PlayScene(){
-    shopX = 100;
+    shopX = 150;
     shopY = 20;
     shopN = 8;
+    sunN = 0;
     for(int i = 0; i < GRID_Y_N; ++i){
         for(int j = 0; j < GRID_X_N; ++j){
             plantFlags[i][j] = 0;
         }
     }
+    sunPicture.load(SOURCE_PATH+"sunBig.png", 1);
 }
 
 void PlayScene::addCooldownButton(CooldownButton *cooldownButton){
@@ -123,6 +125,14 @@ void PlayScene::draw(cv::Mat &image){
     for(int i = 0; i < charactors.size(); ++i){
         charactors[i]->draw(image);
     }
+    int sunX = 20;
+    int sunY = 20;
+
+    std::stringstream ss;
+    ss << sunN;
+    cv::rectangle(image, cv::Point(sunX, sunY), cv::Point(sunX+sunPicture.width(), sunY+sunPicture.height()), cv::Scalar(20, 105, 139), 3);
+    sunPicture.draw(sunX, sunY, image);
+    cv::putText(image, ss.str(), cv::Point(sunX, sunY+sunPicture.height()+25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
 }
 
 void PlayScene::addPlant(Plant *p, int x, int y){
@@ -193,4 +203,8 @@ void PlayScene::clear(){
 
 Sun* PlayScene::getSun(int x, int y){
     return suns[y*GRID_X_N+x];
+}
+
+void PlayScene::checkSun(int n){
+    sunN = n;
 }

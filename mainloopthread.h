@@ -59,6 +59,8 @@ private:
 signals:
     void myExit();
 
+    void changeSun(int sunN);
+
 public slots:
     void myMouseMoveSlot(QMouseEvent *e);
     void myMousePushSlot(QMouseEvent *e);
@@ -74,9 +76,11 @@ public slots:
 
     void cooldownButtonPush(MyPicture* p);
 
-    void cooldownButtonRelease(std::string plantName);
+    void cooldownButtonRelease(std::string plantName, CooldownButton* b);
 
-    void AddPeaBullet(int x, int y);
+    void addPeaBullet(int x, int y);
+
+    void addSun(int n);
 
 };
 

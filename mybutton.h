@@ -62,9 +62,10 @@ public:
     void draw(cv::Mat &image);
     void push();
     void release();
+    void cooldown();
 signals:
     void cooldownButtonFirstPush(MyPicture* p);
-    void cooldownButtonMyRelease(std::string name);
+    void cooldownButtonMyRelease(std::string name, CooldownButton* b);
 
 public slots:
     void checkSun(int sun);

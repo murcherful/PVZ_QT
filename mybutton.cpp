@@ -94,7 +94,7 @@ void CooldownButton::update(){
     if(coolDownCount>0){
         coolDownCount--;
     }
-    else if(!valible && coolDownCount == 0){
+    else if(!valible && coolDownCount == 0 && hasEnoughSun){
         valible = 1;
     }
     MyButton::update();
@@ -104,13 +104,20 @@ void CooldownButton::draw(cv::Mat &image){
     if(!active){
         return;
     }
-    cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(150, 150, 150), -1);
-    cv::rectangle(image, cv::Rect(x, y, w, h*((double(coolDownTime-coolDownCount)/coolDownTime))), cv::Scalar(255, 255, 255), -1);
-    cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(0, 0, 0), 3);
+    if(!hasEnoughSun){
+        cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(150, 150, 150), -1);
+    }
+    else{
+        cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(255, 255, 255), -1);
+        cv::rectangle(image, cv::Rect(x, y, w, h*((double(coolDownCount)/coolDownTime))), cv::Scalar(255, 191, 0), -1);
+    }
+    //cv::rectangle(image, cv::Rect(x, y, w, h*((double(coolDownCount)/coolDownTime))), cv::Scalar(0, 191, 255), -1);
+    //cv::rectangle(image, cv::Rect(x, y, w, h*((double(coolDownTime-coolDownCount)/coolDownTime))), cv::Scalar(255, 255, 255), -1);
+    cv::rectangle(image, cv::Rect(x, y, w, h), cv::Scalar(30, 105, 139), 3);
     MyButton::draw(image);
     //std::cout << "dd" << std::endl;
     for(int i = 0; i < infos.size(); ++i){
-        cv::putText(image, infos[i], cv::Point(x, y+h+(i+1)*20), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+        cv::putText(image, infos[i], cv::Point(x, y+h+(i+1)*20), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
     }
 }
 
@@ -119,19 +126,24 @@ void CooldownButton::push(){
     cooldownButtonFirstPush(&pictureNormal);
 }
 
-void CooldownButton::release(){
+void CooldownButton::cooldown(){
     coolDownCount = coolDownTime;
     valible = 0;
+}
+
+void CooldownButton::release(){
     MyButton::release();
-    cooldownButtonMyRelease(plantName);
+    cooldownButtonMyRelease(plantName, this);
 }
 
 void CooldownButton::checkSun(int sun){
     if(sun >= cost){
         hasEnoughSun = 1;
+        valible = 1;
     }
     else{
         hasEnoughSun = 0;
+        valible = 0;
     }
 }
 
@@ -152,7 +164,7 @@ void Sun::draw(cv::Mat &image){
         pictureNormal.draw(x, y, image);
         std::stringstream ss;
         ss << sunNumber;
-        cv::putText(image, ss.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0));
+        cv::putText(image, ss.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
     }
 }
 
