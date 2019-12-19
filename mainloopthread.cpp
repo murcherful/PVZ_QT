@@ -120,9 +120,14 @@ MainLoopThread::MainLoopThread(QLabel* label)
 
     // test add charactor
     NormalZombie* nz0 = new NormalZombie();
-    nz0->setPosition(GRID_X+gridWidth*1, GRID_Y+gridHeight*2);
+    nz0->setPosition(GRID_X+gridWidth*10, GRID_Y+gridHeight*2);
     connect(nz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(nz0);
+
+    ConeZombie* cz0 = new ConeZombie();
+    cz0->setPosition(GRID_X+gridWidth*10, GRID_Y+gridHeight*1);
+    connect(cz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
+    scene2.addZombie(cz0);
 
     SunFlower* sf0 = new SunFlower();
     //int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;

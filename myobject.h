@@ -201,6 +201,21 @@ public:
 };
 
 
+#define CONEZOMBIE_HP             220
+#define CONEZOMBIE_ATTACK         50
+#define CONEZOMBIE_DEFENSE        70
+#define CONEZOMBIE_ATTACK_SPEED   (PFS)
+#define CONEZOMBIE_SPEED          (1)
+
+class ConeZombie:public Zombie{
+    private:
+    public:
+        ConeZombie();
+        //~ConeZombie();
+};
+
+
+
 #define PEABULLET_SPEED      10
 #define PEABULLET_ATTACK     50
 

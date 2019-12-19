@@ -71,7 +71,7 @@ PlayScene::PlayScene(){
             plantFlags[i][j] = 0;
         }
     }
-    weedKiller[2] = 0;
+    //weedKiller[2] = 0;
     sunPicture.load(SOURCE_PATH+"sunBig.png", 1);
     weedKillerPicture.load(SOURCE_PATH+"weedKiller.png", 1);
 }

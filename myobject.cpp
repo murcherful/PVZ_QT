@@ -402,6 +402,13 @@ NormalZombie::NormalZombie(){
     setZombieAttributions(NORMALZOMBIE_SPEED);
 }
 
+ConeZombie::ConeZombie(){
+    setName("ConeZombie");
+    loadPicture(SOURCE_PATH+"ConeZombie.png");
+    setAttackAttributions(CONEZOMBIE_HP, CONEZOMBIE_ATTACK, CONEZOMBIE_DEFENSE, CONEZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(CONEZOMBIE_SPEED);
+}
+
 PeaBullet::PeaBullet(){
     setName("PeaBullet");
     loadPicture(SOURCE_PATH+"PeaBullet.png");
