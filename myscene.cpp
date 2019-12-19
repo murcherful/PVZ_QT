@@ -273,4 +273,7 @@ void PlayScene::reStart(){
     for(int i = 0; i <cooldownButtons.size(); ++i){
         cooldownButtons[i]->reSet();
     }
+    for(int i = 0; i < suns.size(); ++i){
+        suns[i]->clearSun();
+    }
 }

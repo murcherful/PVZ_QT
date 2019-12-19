@@ -85,6 +85,7 @@ public:
     void update();
     void draw(cv::Mat &image);
     void release();
+    void clearSun();
 
 signals:
     void getSun(int n);

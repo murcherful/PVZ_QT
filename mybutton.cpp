@@ -191,3 +191,7 @@ void Sun::release(){
     MyButton::release();
 }
 
+void Sun::clearSun(){
+    sunNumber = 0;
+}
+
