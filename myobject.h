@@ -230,7 +230,20 @@ class ConeZombie:public Zombie{
         //~ConeZombie();
 };
 
+#define NEWSZOMBIE_HP             220
+#define NEWSZOMBIE_ATTACK         50
+#define NEWSZOMBIE_DEFENSE        50
+#define NEWSZOMBIE_ATTACK_SPEED   (PFS)
+#define NEWSZOMBIE_SPEED          (1)
 
+class NewsZombie:public Zombie{
+    private:
+    public:
+        bool isBreak;
+        NewsZombie();
+        //~NewsZombie();
+        void update();
+};
 
 #define PEABULLET_SPEED      10
 #define PEABULLET_ATTACK     50

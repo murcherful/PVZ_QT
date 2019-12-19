@@ -436,6 +436,23 @@ ConeZombie::ConeZombie(){
     setZombieAttributions(CONEZOMBIE_SPEED);
 }
 
+NewsZombie::NewsZombie(){
+    isBreak = 0;
+    setName("NewsZombie");
+    loadPicture(SOURCE_PATH+"NewsZombie.png");
+    setAttackAttributions(NEWSZOMBIE_HP, NEWSZOMBIE_ATTACK, NEWSZOMBIE_DEFENSE, NEWSZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(NEWSZOMBIE_SPEED);
+}
+
+void NewsZombie::update(){
+    Zombie::update();
+    if(!isBreak && hp < NEWSZOMBIE_HP*0.75){
+        isBreak = 1;
+        loadPicture(SOURCE_PATH+"NewsZombieBreak.png");
+        setZombieAttributions(NEWSZOMBIE_SPEED*3);
+    }
+}
+
 PeaBullet::PeaBullet(){
     setName("PeaBullet");
     loadPicture(SOURCE_PATH+"PeaBullet.png");
