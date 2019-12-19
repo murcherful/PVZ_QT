@@ -72,7 +72,7 @@ public slots:
 
     void exitButtonRelease();
 
-    void exitSamllButtonRelease();
+    void exitSmallButtonRelease();
 
     //void peaShooterButtonPush();
 

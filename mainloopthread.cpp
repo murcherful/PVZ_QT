@@ -46,7 +46,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     exitButtonSmall->setName("exitButtonSmall");
     exitButtonSmall->setPosition(1150, 10);
     exitButtonSmall->loadPicture(SOURCE_PATH+"exitButtonSmall.png", SOURCE_PATH+"exitButtonSmall_push.png");
-    connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitButtonRelease);
+    connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitSmallButtonRelease);
     scene2.addButton(exitButtonSmall);
     connect(this, &MainLoopThread::changeSun, &scene2, &PlayScene::checkSun);
     connect(&scene2, &PlayScene::gameOver, this, &MainLoopThread::reStart);
@@ -221,7 +221,7 @@ void MainLoopThread::exitButtonRelease(){
     myExit();
 }
 
-void MainLoopThread::exitSamllButtonRelease(){
+void MainLoopThread::exitSmallButtonRelease(){
     std::cout << "[Debug]: back" << std::endl;
     currentScene = &scene1;
 }
