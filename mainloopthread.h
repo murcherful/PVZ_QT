@@ -86,6 +86,7 @@ public slots:
     void shovelButtonRelease();
 
     void addPeaBullet(int x, int y);
+    void addSnowBullet(int x, int y);
 
     void addSun(int n);
 

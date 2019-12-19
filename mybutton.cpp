@@ -93,9 +93,13 @@ void CooldownButton::setPlantName(std::string plantName){
 void CooldownButton::update(){
     if(coolDownCount>0){
         coolDownCount--;
+        valible = 0;
     }
     else if(!valible && coolDownCount == 0 && hasEnoughSun){
         valible = 1;
+    }
+    else{
+        valible = 0;
     }
     MyButton::update();
 }

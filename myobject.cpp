@@ -313,8 +313,26 @@ void Zombie::interactive(Plant* p){
     }
 }
 
+void Zombie::draw(cv::Mat &image){
+    MyObject::draw(image);
+    std::stringstream hpString;
+    hpString << name;
+    int baseLine = 0;
+    cv::Size textSize = cv::getTextSize(hpString.str(), cv::FONT_HERSHEY_SIMPLEX, 0.25, 1, &baseLine);
+    cv::rectangle(image, cv::Point(x, y-textSize.height), cv::Point(x+textSize.width, y), cv::Scalar(200, 200, 200), -1);
+    if(slowDownCount != 0){
+        cv::rectangle(image, cv::Point(x, y-textSize.height), cv::Point(x+textSize.width*((double)hp/(double)hpCopy), y), cv::Scalar(237, 149, 100), -1);
+    }
+    else{
+        cv::rectangle(image, cv::Point(x, y-textSize.height), cv::Point(x+textSize.width*((double)hp/(double)hpCopy), y), cv::Scalar(106, 106, 255), -1);
+    }
+
+    cv::rectangle(image, cv::Point(x-1, y-textSize.height-1), cv::Point(x+textSize.width+1, y+1), cv::Scalar(0, 0, 0), 1);
+    cv::putText(image, hpString.str(), cv::Point(x, y), cv::FONT_HERSHEY_SIMPLEX, 0.25, cv::Scalar(0, 0, 0), 1);
+}
+
 void Zombie::slowDown(){
-    slowDownCount = speed*0.75;
+    slowDownCount = (PFS*0.4);
 }
 
 void Zombie::randomUpDonw(){
@@ -395,6 +413,15 @@ PeaShooter::PeaShooter(){
     setPlantAttributions(PEASHOOTER_NEED_SUN_NUMBER, PEASHOOTER_COOLDOWN_TIME, 1, 1);
 }
 
+SnowPea::SnowPea(){
+    setName("SnowPea");
+    setShootY(SNOWPEA_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"SnowPea.png");
+    setAttackAttributions(SNOWPEA_HP, SNOWPEA_ATTACK, SNOWPEA_DEFENSE, SNOWPEA_ATTACK_SPEED);
+    setPlantAttributions(SNOWPEA_NEED_SUN_NUMBER, SNOWPEA_COOLDOWN_TIME, 1, 1);
+}
+
+
 NormalZombie::NormalZombie(){
     setName("NormalZombie");
     loadPicture(SOURCE_PATH+"NormalZombie.png");
@@ -414,4 +441,22 @@ PeaBullet::PeaBullet(){
     loadPicture(SOURCE_PATH+"PeaBullet.png");
     setAttackAttributions(PEABULLET_ATTACK);
     setBulletAttributions(PEABULLET_SPEED);
+}
+
+SnowBullet::SnowBullet(){
+    setName("SnowBullet");
+    loadPicture(SOURCE_PATH+"SnowBullet.png");
+    setAttackAttributions(SNOWBULLET_ATTACK);
+    setBulletAttributions(SNOWBULLET_SPEED);
+}
+
+void SnowBullet::interactive(Zombie* z){
+    if(isDead()){
+        return;
+    }
+    if(z->getGY() == getGY() && getX()+getW() >= z->getX()){
+        z->defend(attack);
+        z->slowDown();
+        hp = 0;
+    }
 }

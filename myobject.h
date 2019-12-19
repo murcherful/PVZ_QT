@@ -127,6 +127,7 @@ public:
     void setPosition(int x, int y);
     virtual void setZombieAttributions(double speed);
     void update();
+    void draw(cv::Mat &image);
     //void draw(cv::Mat &image);
     virtual void interactive(Plant* p);
     virtual void slowDown();
@@ -186,6 +187,21 @@ public:
     //~PeaShooter();
 };
 
+#define SNOWPEA_HP              150
+#define SNOWPEA_ATTACK          0
+#define SNOWPEA_DEFENSE         50
+#define SNOWPEA_ATTACK_SPEED    (PFS*2)
+#define SNOWPEA_NEED_SUN_NUMBER 10
+#define SNOWPEA_COOLDOWN_TIME   (PFS*14)
+#define SNOWPEA_SHOOT_Y         15
+
+class SnowPea:public Plant{
+    private:
+    public:
+        SnowPea();
+        //~SnowPea();
+};
+
 
 #define NORMALZOMBIE_HP             180
 #define NORMALZOMBIE_ATTACK         50
@@ -224,6 +240,17 @@ class PeaBullet:public Bullet{
 public:
     PeaBullet();
     //~PeaBullet();
+};
+
+#define SNOWBULLET_SPEED      10
+#define SNOWBULLET_ATTACK     50
+
+class SnowBullet:public Bullet{
+    private:
+    public:
+        SnowBullet();
+        void interactive(Zombie *z);
+        //~SnowBullet();
 };
 
 #endif // MYOBJECT_H

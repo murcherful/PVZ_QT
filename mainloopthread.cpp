@@ -62,6 +62,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     // add buttons of shop
     shopPlants.push_back(new SunFlower());
     shopPlants.push_back(new PeaShooter());
+    shopPlants.push_back(new SnowPea());
 
     for(int i = 0; i < shopPlants.size(); ++i){
         CooldownButton* cooldownButton = new CooldownButton();
@@ -263,6 +264,12 @@ void MainLoopThread::addPeaBullet(int x, int y){
     scene2.addBullet(pb);
 }
 
+void MainLoopThread::addSnowBullet(int x, int y){
+    SnowBullet* sb = new SnowBullet();
+    sb->setPosition(x, y);
+    scene2.addBullet(sb);
+}
+
 bool MainLoopThread::addPlant(std::string plantName){
     int plantX = (mouseX-GRID_X)/gridWidth;
     int plantY = (mouseY-GRID_Y)/gridHeight;
@@ -284,6 +291,11 @@ bool MainLoopThread::addPlant(std::string plantName){
         connect(sf, &SunFlower::genSun, scene2.getSun(plantX, plantY), &Sun::addSun);
         scene2.addPlant(sf, plantX, plantY);
 
+    }
+    else if(plantName == "SnowPea"){
+        SnowPea* sp = new SnowPea();
+        connect(sp, &SnowPea::genBullet, this, &MainLoopThread::addSnowBullet);
+        scene2.addPlant(sp, plantX, plantY);
     }
     return 1;
 }
