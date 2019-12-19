@@ -49,6 +49,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitButtonRelease);
     scene2.addButton(exitButtonSmall);
     connect(this, &MainLoopThread::changeSun, &scene2, &PlayScene::checkSun);
+    connect(&scene2, &PlayScene::gameOver, this, &MainLoopThread::reStart);
 
     shovelButton = new MyButton();
     shovelButton->setName("shovelButton");
@@ -119,7 +120,8 @@ MainLoopThread::MainLoopThread(QLabel* label)
 
     // test add charactor
     NormalZombie* nz0 = new NormalZombie();
-    nz0->setPosition(GRID_X+gridWidth*10, GRID_Y+gridHeight*1);
+    nz0->setPosition(GRID_X+gridWidth*1, GRID_Y+gridHeight*2);
+    connect(nz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(nz0);
 
     SunFlower* sf0 = new SunFlower();
@@ -210,14 +212,20 @@ void MainLoopThread::myMouseReleaseSlot(QMouseEvent *e){
 }
 
 void MainLoopThread::playButtonRelease(){
-    std::cout << "change scene" << std::endl;
+    std::cout << "[Debug]: change scene" << std::endl;
     currentScene = &scene2;
 }
 
 void MainLoopThread::exitButtonRelease(){
-    std::cout << "exit" << std::endl;
+    std::cout << "[Debug]: exit" << std::endl;
     myExit();
 }
+
+void MainLoopThread::exitSamllButtonRelease(){
+    std::cout << "[Debug]: back" << std::endl;
+    currentScene = &scene1;
+}
+
 /*
 void MainLoopThread::peaShooterButtonPush(){
     mouseImage = peaShooterButton->getPicture();
@@ -253,6 +261,9 @@ void MainLoopThread::addPeaBullet(int x, int y){
 bool MainLoopThread::addPlant(std::string plantName){
     int plantX = (mouseX-GRID_X)/gridWidth;
     int plantY = (mouseY-GRID_Y)/gridHeight;
+    if(plantX < 0 || plantX >= GRID_X_N ||plantY < 0 || plantY >= GRID_Y_N){
+        return 0;
+    }
     //std::cout << "[Debug]: plantX:" << plantX << " plantY:" << plantY << std::endl;
     if(scene2.isGridValid(plantX, plantY)){
         return 0;
@@ -285,7 +296,17 @@ void MainLoopThread::shovelButtonPush(){
 void MainLoopThread::shovelButtonRelease(){
     int plantX = (mouseX-GRID_X)/gridWidth;
     int plantY = (mouseY-GRID_Y)/gridHeight;
-    scene2.removePlant(plantX, plantY);
     mouseImage = &mouseImageDefault;
     isMouseCenter = 0;
+    if(plantX < 0 || plantX >= GRID_X_N ||plantY < 0 || plantY >= GRID_Y_N){
+        return;
+    }
+    scene2.removePlant(plantX, plantY);
+
+}
+
+void MainLoopThread::reStart(){
+    currentScene = &scene1;
+    sunN = 10;
+    changeSun(sunN);
 }

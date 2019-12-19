@@ -132,6 +132,9 @@ public:
     virtual void slowDown();
     virtual void randomUpDonw();
 
+signals:
+    void getLeft(int gY);
+
 };
 
 class Bullet : public Charactor{

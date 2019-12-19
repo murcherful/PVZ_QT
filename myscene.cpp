@@ -66,11 +66,14 @@ PlayScene::PlayScene(){
     shopN = 8;
     sunN = 0;
     for(int i = 0; i < GRID_Y_N; ++i){
+        weedKiller[i] = 1;
         for(int j = 0; j < GRID_X_N; ++j){
             plantFlags[i][j] = 0;
         }
     }
+    weedKiller[2] = 0;
     sunPicture.load(SOURCE_PATH+"sunBig.png", 1);
+    weedKillerPicture.load(SOURCE_PATH+"weedKiller.png", 1);
 }
 
 void PlayScene::addCooldownButton(CooldownButton *cooldownButton){
@@ -134,6 +137,11 @@ void PlayScene::draw(cv::Mat &image){
     cv::rectangle(image, cv::Point(sunX, sunY), cv::Point(sunX+sunPicture.width(), sunY+sunPicture.height()), cv::Scalar(20, 105, 139), 3);
     sunPicture.draw(sunX, sunY, image);
     cv::putText(image, ss.str(), cv::Point(sunX, sunY+sunPicture.height()+25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
+    for(int i = 0; i < GRID_Y_N; ++i){
+        if(weedKiller[i]){
+            weedKillerPicture.draw(GRID_X-weedKillerPicture.width(), GRID_Y+(gridHeight-weedKillerPicture.height())/2+gridHeight*i, image);
+        }
+    }
 }
 
 void PlayScene::addPlant(Plant *p, int x, int y){
@@ -222,5 +230,47 @@ void PlayScene::removePlant(int x, int y){
                 plants[i]->die();break;
             }
         }
+    }
+}
+
+void PlayScene::checkLeft(int gY){
+    if(weedKiller[gY]){
+        weedKiller[gY] = 0;
+        clearLine(gY);
+    }
+    else{
+        std::cout << "[Debug]: Game Over" << std::endl;
+        reStart();
+        gameOver();
+    }
+}
+
+void PlayScene::clearLine(int gY){
+    for(int i = 0; i <GRID_X_N; ++i){
+        grids[gY*GRID_X_N+i]->black();
+    }
+    for(int i = 0 ;i < zombies.size(); ++i){
+        if(zombies[i]->getGY() == gY){
+            zombies[i]->die();
+        }
+    }
+}
+
+void PlayScene::reStart(){
+    for(int i = 0; i < GRID_Y_N; ++i){
+        weedKiller[i] = 1;
+        for(int j = 0; j < GRID_X_N; ++j){
+            plantFlags[i][j] = 0;
+        }
+    }
+    plants.clear();
+    zombies.clear();
+    bullets.clear();
+    for(int i = 0; i < charactors.size(); ++i){
+        delete charactors[i];
+    }
+    charactors.clear();
+    for(int i = 0; i <cooldownButtons.size(); ++i){
+        cooldownButtons[i]->reSet();
     }
 }

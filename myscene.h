@@ -41,6 +41,8 @@ public:
     std::vector<Zombie*> zombies;
     std::vector<Bullet*> bullets;
     bool plantFlags[GRID_Y_N][GRID_X_N];
+    bool weedKiller[GRID_Y_N];
+    MyPicture weedKillerPicture;
 
     PlayScene();
     void addCooldownButton(CooldownButton* cooldownButton);
@@ -55,9 +57,15 @@ public:
     void clear();
     bool isGridValid(int x, int y);
     void removePlant(int x, int y);
+    void clearLine(int gY);
+    void reStart();
 
-//public slots:
+signals:
+    void gameOver();
+
+public slots:
     void checkSun(int n);
+    void checkLeft(int gY);
 };
 
 #endif // MYSCENE_H

@@ -72,6 +72,8 @@ public slots:
 
     void exitButtonRelease();
 
+    void exitSamllButtonRelease();
+
     //void peaShooterButtonPush();
 
     //void peaShooterButtonRelease();
@@ -86,6 +88,8 @@ public slots:
     void addPeaBullet(int x, int y);
 
     void addSun(int n);
+
+    void reStart();
 
 };
 

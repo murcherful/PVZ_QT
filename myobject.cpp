@@ -279,6 +279,9 @@ void Zombie::update(){
         moveCount = 0;
     }
     */
+    if(x < GRID_X){
+        getLeft(gY);
+    }
     if(slowDownCount != 0){
         slowDownCount--;
     }

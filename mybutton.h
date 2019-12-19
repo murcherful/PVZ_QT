@@ -64,6 +64,7 @@ public:
     void push();
     void release();
     void cooldown();
+    void reSet();
 signals:
     void cooldownButtonFirstPush(MyPicture* p);
     void cooldownButtonMyRelease(std::string name, CooldownButton* b);
