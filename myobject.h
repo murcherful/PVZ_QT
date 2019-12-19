@@ -54,6 +54,7 @@ class Charactor : public MyObject{
     Q_OBJECT
 public:
     int gY;
+    int gX;
 
     bool attackStart;
     int attackCount;
@@ -79,6 +80,8 @@ public:
     virtual void stopAttack();
     virtual bool getIsAttackStart();
     virtual bool isDead();
+    virtual void die();
+    virtual bool atPosition(int x, int y);
 };
 
 class Zombie;

@@ -283,6 +283,9 @@ void MainLoopThread::shovelButtonPush(){
 }
 
 void MainLoopThread::shovelButtonRelease(){
+    int plantX = (mouseX-GRID_X)/gridWidth;
+    int plantY = (mouseY-GRID_Y)/gridHeight;
+    scene2.removePlant(plantX, plantY);
     mouseImage = &mouseImageDefault;
     isMouseCenter = 0;
 }

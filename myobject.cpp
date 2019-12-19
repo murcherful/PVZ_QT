@@ -131,6 +131,11 @@ bool Charactor::getIsAttack(){
 void Charactor::setPosition(int x, int y){
     MyObject::setPosition(x, y);
     gY = (y - GRID_Y)/gridHeight;
+    gX = (x - GRID_X)/gridWidth;
+}
+
+bool Charactor::atPosition(int x, int y){
+    return x == gX && y == gY;
 }
 
 int Charactor::getAttack(){
@@ -174,6 +179,10 @@ bool Charactor::isDead(){
     else{
         return 0;
     }
+}
+
+void Charactor::die(){
+    hp = 0;
 }
 
 Plant::Plant(){

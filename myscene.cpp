@@ -214,3 +214,13 @@ void PlayScene::checkSun(int n){
 bool PlayScene::isGridValid(int x, int y){
     return plantFlags[y][x];
 }
+
+void PlayScene::removePlant(int x, int y){
+    if(plantFlags[y][x]){
+        for(int i = 0; i < plants.size(); ++i){
+            if(plants[i]->atPosition(x, y)){
+                plants[i]->die();break;
+            }
+        }
+    }
+}

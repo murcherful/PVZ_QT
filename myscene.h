@@ -54,6 +54,7 @@ public:
     void addBullet(Bullet* b);
     void clear();
     bool isGridValid(int x, int y);
+    void removePlant(int x, int y);
 
 //public slots:
     void checkSun(int n);
