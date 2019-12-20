@@ -99,7 +99,7 @@ void CooldownButton::update(){
         valible = 1;
     }
     else{
-        valible = 0;
+        //valible = 0;
     }
     MyButton::update();
 }
