@@ -469,6 +469,35 @@ void NewsZombie::update(){
     }
 }
 
+PoleZombie::PoleZombie(){
+    isJump = 0;
+    setName("PoleZombie");
+    loadPicture(SOURCE_PATH+"PoleZombie.png");
+    setAttackAttributions(POLEZOMBIE_HP, POLEZOMBIE_ATTACK, POLEZOMBIE_DEFENSE, POLEZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(POLEZOMBIE_SPEED);
+}
+
+void PoleZombie::interactive(Plant *p){
+    if(p->getIsZombieValid() && getGY() == p->getGY() && (p->getX()+p->getW() >= getX() && p->getX() <= getX())){
+        isInteractive = 1;
+        if(isJump == 0){
+            rx -= gridWidth;
+            isJump = 1;
+            speed = NORMALZOMBIE_SPEED;
+            picture.load(SOURCE_PATH+"NormalZombie.png", 1);
+            return;
+        }
+        if(!getIsAttackStart()){
+            startAttack();
+        }
+        else if(getIsAttack()){
+            p->defend(getAttack());
+            stopAttack();
+        }
+    }
+}
+
+
 PeaBullet::PeaBullet(){
     setName("PeaBullet");
     loadPicture(SOURCE_PATH+"PeaBullet.png");

@@ -271,6 +271,22 @@ class NewsZombie:public Zombie{
         void update();
 };
 
+#define POLEZOMBIE_HP             150
+#define POLEZOMBIE_ATTACK         50
+#define POLEZOMBIE_DEFENSE        50
+#define POLEZOMBIE_ATTACK_SPEED   (PFS)
+#define POLEZOMBIE_SPEED          (3)
+
+class PoleZombie:public Zombie{
+    private:
+    public:
+        bool isJump;
+
+        PoleZombie();
+        //~PoleZombie();
+        void interactive(Plant* p);
+};
+
 #define PEABULLET_SPEED      10
 #define PEABULLET_ATTACK     50
 
