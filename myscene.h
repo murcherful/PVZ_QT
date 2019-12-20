@@ -43,6 +43,7 @@ public:
     bool plantFlags[GRID_Y_N][GRID_X_N];
     bool weedKiller[GRID_Y_N];
     MyPicture weedKillerPicture;
+    bool isCheckLeft;
 
     PlayScene();
     void addCooldownButton(CooldownButton* cooldownButton);

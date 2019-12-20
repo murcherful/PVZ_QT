@@ -135,6 +135,16 @@ MainLoopThread::MainLoopThread(QLabel* label)
     connect(nez0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(nez0);
 
+    BucketZombie* bz0 = new BucketZombie();
+    bz0->setPosition(GRID_X+gridWidth*1, GRID_Y+gridHeight*4);
+    connect(bz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
+    scene2.addZombie(bz0);
+
+    DoorZombie* dz0 = new DoorZombie();
+    dz0->setPosition(GRID_X+gridWidth*1, GRID_Y+gridHeight*4);
+    connect(dz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
+    scene2.addZombie(dz0);
+
     SunFlower* sf0 = new SunFlower();
     //int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
     //int sfY = GRID_Y+gridHeight*0+gridHeight/2-sf0->getH()/2;

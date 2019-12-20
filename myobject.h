@@ -230,6 +230,32 @@ class ConeZombie:public Zombie{
         //~ConeZombie();
 };
 
+#define BUCKETZOMBIE_HP             280
+#define BUCKETZOMBIE_ATTACK         50
+#define BUCKETZOMBIE_DEFENSE        120
+#define BUCKETZOMBIE_ATTACK_SPEED   (PFS)
+#define BUCKETZOMBIE_SPEED          (1)
+
+class BucketZombie:public Zombie{
+    private:
+    public:
+        BucketZombie();
+        //~BucketZombie();
+};
+
+#define DOORZOMBIE_HP             400
+#define DOORZOMBIE_ATTACK         50
+#define DOORZOMBIE_DEFENSE        150
+#define DOORZOMBIE_ATTACK_SPEED   (PFS)
+#define DOORZOMBIE_SPEED          (1)
+
+class DoorZombie:public Zombie{
+    private:
+    public:
+        DoorZombie();
+        //~DoorZombie();
+};
+
 #define NEWSZOMBIE_HP             220
 #define NEWSZOMBIE_ATTACK         50
 #define NEWSZOMBIE_DEFENSE        50

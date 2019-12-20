@@ -279,7 +279,7 @@ void Zombie::update(){
         moveCount = 0;
     }
     */
-    if(x < GRID_X){
+    if(hp > 0 && x < GRID_X){
         getLeft(gY);
     }
     if(slowDownCount != 0){
@@ -435,6 +435,22 @@ ConeZombie::ConeZombie(){
     setAttackAttributions(CONEZOMBIE_HP, CONEZOMBIE_ATTACK, CONEZOMBIE_DEFENSE, CONEZOMBIE_ATTACK_SPEED);
     setZombieAttributions(CONEZOMBIE_SPEED);
 }
+
+BucketZombie::BucketZombie(){
+    setName("BucketZombie");
+    loadPicture(SOURCE_PATH+"BucketZombie.png");
+    setAttackAttributions(BUCKETZOMBIE_HP, BUCKETZOMBIE_ATTACK, BUCKETZOMBIE_DEFENSE, BUCKETZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(BUCKETZOMBIE_SPEED);
+}
+
+
+DoorZombie::DoorZombie(){
+    setName("DoorZombie");
+    loadPicture(SOURCE_PATH+"DoorZombie.png");
+    setAttackAttributions(DOORZOMBIE_HP, DOORZOMBIE_ATTACK, DOORZOMBIE_DEFENSE, DOORZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(DOORZOMBIE_SPEED);
+}
+
 
 NewsZombie::NewsZombie(){
     isBreak = 0;

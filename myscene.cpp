@@ -74,6 +74,7 @@ PlayScene::PlayScene(){
     //weedKiller[2] = 0;
     sunPicture.load(SOURCE_PATH+"sunBig.png", 1);
     weedKillerPicture.load(SOURCE_PATH+"weedKiller.png", 1);
+    isCheckLeft = 0;
 }
 
 void PlayScene::addCooldownButton(CooldownButton *cooldownButton){
@@ -114,6 +115,9 @@ void PlayScene::update(){
     }
     for(int i = 0; i < grids.size(); ++i){
         grids[i]->update();
+    }
+    if(isCheckLeft){
+        isCheckLeft = 0;
     }
 }
 
@@ -234,6 +238,12 @@ void PlayScene::removePlant(int x, int y){
 }
 
 void PlayScene::checkLeft(int gY){
+    if(isCheckLeft){
+        return;
+    }
+    else{
+        isCheckLeft = 1;
+    }
     if(weedKiller[gY]){
         weedKiller[gY] = 0;
         clearLine(gY);
