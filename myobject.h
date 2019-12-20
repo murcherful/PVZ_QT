@@ -287,6 +287,41 @@ class PoleZombie:public Zombie{
         void interactive(Plant* p);
 };
 
+#define BACKUPZOMBIE_HP             150
+#define BACKUPZOMBIE_ATTACK         50
+#define BACKUPZOMBIE_DEFENSE        50
+#define BACKUPZOMBIE_ATTACK_SPEED   (PFS)
+#define BACKUPZOMBIE_SPEED          (1)
+
+class BackupZombie:public Zombie{
+    private:
+    public:
+
+        BackupZombie();
+        //~BackupZombie();
+};
+
+#define DANCINGZOMBIE_HP             200
+#define DANCINGZOMBIE_ATTACK         50
+#define DANCINGZOMBIE_DEFENSE        100
+#define DANCINGZOMBIE_ATTACK_SPEED   (PFS)
+#define DANCINGZOMBIE_SPEED          (1)
+#define DANCINGZOMBIE_GEN_ZOM_SPEED  (PFS*10)
+
+class DancingZombie:public Zombie{
+    Q_OBJECT
+    private:
+    public:
+        int genZomCount;
+        int genZomSpeed;
+
+        DancingZombie();
+        //~DancingZombie();
+        void update();
+signals:
+        void genZombie(int gX, int gY);
+};
+
 #define PEABULLET_SPEED      10
 #define PEABULLET_ATTACK     50
 

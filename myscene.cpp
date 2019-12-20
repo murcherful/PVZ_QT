@@ -287,3 +287,32 @@ void PlayScene::reStart(){
         suns[i]->clearSun();
     }
 }
+
+void PlayScene::addBackupZombie(int gX, int gY){
+    BackupZombie* baz;
+    if(gX-1 >= 0){
+        baz = new BackupZombie();
+        baz->setPosition(GRID_X+gridWidth*(gX-1), GRID_Y+gridHeight*gY);
+        connect(baz, &Zombie::getLeft, this, &PlayScene::checkLeft);
+        addZombie(baz);
+    }
+    if(gX+1 < GRID_X_N){
+        baz = new BackupZombie();
+        baz->setPosition(GRID_X+gridWidth*(gX+1), GRID_Y+gridHeight*gY);
+        connect(baz, &Zombie::getLeft, this, &PlayScene::checkLeft);
+        addZombie(baz);
+    }
+    if(gY-1 >= 0){
+        baz = new BackupZombie();
+        baz->setPosition(GRID_X+gridWidth*gX, GRID_Y+gridHeight*(gY-1));
+        connect(baz, &Zombie::getLeft, this, &PlayScene::checkLeft);
+        addZombie(baz);
+    }
+    if(gY+1 < GRID_Y_N){
+        baz = new BackupZombie();
+        baz->setPosition(GRID_X+gridWidth*gX, GRID_Y+gridHeight*(gY+1));
+        connect(baz, &Zombie::getLeft, this, &PlayScene::checkLeft);
+        addZombie(baz);
+    }
+
+}

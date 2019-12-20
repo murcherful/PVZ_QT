@@ -67,6 +67,7 @@ signals:
 public slots:
     void checkSun(int n);
     void checkLeft(int gY);
+    void addBackupZombie(int gX, int gY);
 };
 
 #endif // MYSCENE_H

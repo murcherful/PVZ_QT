@@ -150,6 +150,18 @@ MainLoopThread::MainLoopThread(QLabel* label)
     connect(pz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(pz0);
 
+    BackupZombie* baz0 = new BackupZombie();
+    baz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*2);
+    connect(baz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
+    scene2.addZombie(baz0);
+
+    DancingZombie* daz0 = new DancingZombie();
+    daz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*1);
+    connect(daz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
+    connect(daz0, &DancingZombie::genZombie, &scene2, &PlayScene::addBackupZombie);
+    scene2.addZombie(daz0);
+
+
     SunFlower* sf0 = new SunFlower();
     //int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
     //int sfY = GRID_Y+gridHeight*0+gridHeight/2-sf0->getH()/2;

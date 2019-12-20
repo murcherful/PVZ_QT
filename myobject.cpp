@@ -146,6 +146,7 @@ void Charactor::update(){
     if(attackStart){
         attackCount = (attackCount+1)%attackSpeed;
     }
+    gX = (x - GRID_X)/gridWidth;
 }
 
 void Charactor::startAttack(){
@@ -497,6 +498,29 @@ void PoleZombie::interactive(Plant *p){
     }
 }
 
+BackupZombie::BackupZombie(){
+    setName("BackupZombie");
+    loadPicture(SOURCE_PATH+"BackupZombie.png");
+    setAttackAttributions(BACKUPZOMBIE_HP, BACKUPZOMBIE_ATTACK, BACKUPZOMBIE_DEFENSE, BACKUPZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(BACKUPZOMBIE_SPEED);
+}
+
+DancingZombie::DancingZombie(){
+    genZomCount = 0;
+    genZomSpeed = DANCINGZOMBIE_GEN_ZOM_SPEED;
+    setName("DancingZombie");
+    loadPicture(SOURCE_PATH+"DancingZombie.png");
+    setAttackAttributions(DANCINGZOMBIE_HP, DANCINGZOMBIE_ATTACK, DANCINGZOMBIE_DEFENSE, DANCINGZOMBIE_ATTACK_SPEED);
+    setZombieAttributions(DANCINGZOMBIE_SPEED);
+}
+
+void DancingZombie::update(){
+    Zombie::update();
+    genZomCount = (genZomCount+1)%genZomSpeed;
+    if(genZomCount == genZomSpeed-1){
+        genZombie(gX, gY);
+    }
+}
 
 PeaBullet::PeaBullet(){
     setName("PeaBullet");
