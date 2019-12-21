@@ -95,6 +95,10 @@ int Charactor::getGY(){
     return gY;
 }
 
+int Charactor::getGX(){
+    return gX;
+}
+
 void Charactor::setAttackAttributions(int hp, int attack, int defense, int attackSpeed){
     this->hp = hp;
     this->hpCopy = hp;
@@ -422,6 +426,44 @@ SnowPea::SnowPea(){
     setPlantAttributions(SNOWPEA_NEED_SUN_NUMBER, SNOWPEA_COOLDOWN_TIME, 1, 1);
 }
 
+MelonPult::MelonPult(){
+    setName("MelonPult");
+    setShootY(MELONPULT_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"MelonPult.png");
+    setAttackAttributions(MELONPULT_HP, MELONPULT_ATTACK, MELONPULT_DEFENSE, MELONPULT_ATTACK_SPEED);
+    setPlantAttributions(MELONPULT_NEED_SUN_NUMBER, MELONPULT_COOLDOWN_TIME, 1, 1);
+}
+
+SnowMelon::SnowMelon(){
+    setName("SnowMelon");
+    setShootY(SNOWMELON_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"SnowMelon.png");
+    setAttackAttributions(SNOWMELON_HP, SNOWMELON_ATTACK, SNOWMELON_DEFENSE, SNOWMELON_ATTACK_SPEED);
+    setPlantAttributions(SNOWMELON_NEED_SUN_NUMBER, SNOWMELON_COOLDOWN_TIME, 1, 1);
+}
+
+SpikeWeed::SpikeWeed(){
+    setName("SpikeWeed");
+    //setShootY(SPIKEWEED_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"SpikeWeed.png");
+    setAttackAttributions(SPIKEWEED_HP, SPIKEWEED_ATTACK, SPIKEWEED_DEFENSE, SPIKEWEED_ATTACK_SPEED);
+    setPlantAttributions(SPIKEWEED_NEED_SUN_NUMBER, SPIKEWEED_COOLDOWN_TIME, 0, 0);
+}
+
+void SpikeWeed::interactive(Zombie *z){
+    if(getGY() == z->getGY() && getX()+getW() >= z->getX() && getX() <= z->getX()){
+        if(!getIsAttackStart()){
+            startAttack();
+        }
+        else if(getIsAttack()){
+            attackCount++;
+            attackSignal(gX, gY, attack);
+            hp -= SPIKEWEED_HP_DESC;
+            //std::cout << "[Debug]: sw attack" << std::endl;
+            stopAttack();
+        }
+    }
+}
 
 NormalZombie::NormalZombie(){
     setName("NormalZombie");
@@ -543,6 +585,44 @@ void SnowBullet::interactive(Zombie* z){
     if(z->getGY() == getGY() && getX()+getW() >= z->getX()){
         z->defend(attack);
         z->slowDown();
+        hp = 0;
+    }
+}
+
+MelonBullet::MelonBullet(){
+    setName("MelonBullet");
+    loadPicture(SOURCE_PATH+"MelonBullet.png");
+    setAttackAttributions(MELONBULLET_ATTACK);
+    setBulletAttributions(MELONBULLET_SPEED);
+}
+
+void MelonBullet::interactive(Zombie* z){
+    if(isDead()){
+        return;
+    }
+    if(z->getGY() == getGY() && getX()+getW() >= z->getX()){
+        meloonBulletBreak(x, gY, attack);
+        //z->defend(attack);
+        //z->slowDown();
+        hp = 0;
+    }
+}
+
+SnowMelonBullet::SnowMelonBullet(){
+    setName("SnowMelonBullet");
+    loadPicture(SOURCE_PATH+"SnowMelonBullet.png");
+    setAttackAttributions(SNOWMELONBULLET_ATTACK);
+    setBulletAttributions(SNOWMELONBULLET_SPEED);
+}
+
+void SnowMelonBullet::interactive(Zombie* z){
+    if(isDead()){
+        return;
+    }
+    if(z->getGY() == getGY() && getX()+getW() >= z->getX()){
+        snowMeloonBulletBreak(x, gY, attack);
+        //z->defend(attack);
+        //z->slowDown();
         hp = 0;
     }
 }

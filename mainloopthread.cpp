@@ -63,6 +63,9 @@ MainLoopThread::MainLoopThread(QLabel* label)
     shopPlants.push_back(new SunFlower());
     shopPlants.push_back(new PeaShooter());
     shopPlants.push_back(new SnowPea());
+    shopPlants.push_back(new MelonPult());
+    shopPlants.push_back(new SnowMelon());
+    shopPlants.push_back(new SpikeWeed());
 
     for(int i = 0; i < shopPlants.size(); ++i){
         CooldownButton* cooldownButton = new CooldownButton();
@@ -162,7 +165,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     connect(daz0, &DancingZombie::genZombie, &scene2, &PlayScene::addBackupZombie);
     scene2.addZombie(daz0);
 
-
+/*
     SunFlower* sf0 = new SunFlower();
     //int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
     //int sfY = GRID_Y+gridHeight*0+gridHeight/2-sf0->getH()/2;
@@ -179,7 +182,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     //ps0->setPosition(psX, psY);
     connect(ps0, &PeaShooter::genBullet, &scene2, &PlayScene::addPeaBullet);
     scene2.addPlant(ps0, 0, 1);
-
+*/
 }
 
 void MainLoopThread::run(){

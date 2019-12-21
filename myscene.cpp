@@ -64,7 +64,7 @@ PlayScene::PlayScene(){
     shopX = 150;
     shopY = 20;
     shopN = 8;
-    sunN = 10;
+    sunN = 9999;
     for(int i = 0; i < GRID_Y_N; ++i){
         weedKiller[i] = 1;
         for(int j = 0; j < GRID_X_N; ++j){
@@ -333,6 +333,20 @@ void PlayScene::addSnowBullet(int x, int y){
     addBullet(sb);
 }
 
+void PlayScene::addMelonBullet(int x, int y){
+    MelonBullet* mb = new MelonBullet();
+    mb->setPosition(x, y);
+    connect(mb, &MelonBullet::meloonBulletBreak, this, &PlayScene::melonBulletBreak);
+    addBullet(mb);
+}
+
+void PlayScene::addSnowMelonBullet(int x, int y){
+    SnowMelonBullet* smb = new SnowMelonBullet();
+    smb->setPosition(x, y);
+    connect(smb, &SnowMelonBullet::snowMeloonBulletBreak, this, &PlayScene::snowMelonBulletBreak);
+    addBullet(smb);
+}
+
 void PlayScene::addSunNumber(int n){
     sunN += n;
     changeSun(sunN);
@@ -363,6 +377,21 @@ void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, 
         connect(sp, &SnowPea::genBullet, this, &PlayScene::addSnowBullet);
         addPlant(sp, plantX, plantY);
     }
+    else if(plantName == "MelonPult"){
+        MelonPult* mp = new MelonPult();
+        connect(mp, &MelonPult::genBullet, this, &PlayScene::addMelonBullet);
+        addPlant(mp, plantX, plantY);
+    }
+    else if(plantName == "SnowMelon"){
+        SnowMelon* sm = new SnowMelon();
+        connect(sm, &SnowMelon::genBullet, this, &PlayScene::addSnowMelonBullet);
+        addPlant(sm, plantX, plantY);
+    }
+    else if(plantName == "SpikeWeed"){
+        SpikeWeed* sw = new SpikeWeed();
+        connect(sw, &SpikeWeed::attackSignal, this, &PlayScene::spikeWeedAttack);
+        addPlant(sw, plantX, plantY);
+    }
     b->cooldown();
     sunN -= b->getCost();
     changeSun(sunN);
@@ -371,4 +400,37 @@ void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, 
 
 void PlayScene::changeSunSiganl(){
     changeSun(sunN);
+}
+
+void PlayScene::melonBulletBreak(int x, int gY, int attack){
+    for(int i = 0; i < zombies.size(); ++i){
+        int zgY = zombies[i]->getGY();
+        int zx = zombies[i]->getX();
+        if(zgY == gY || zgY == gY-1 || zgY == gY+1){
+            if(zx < x +  gridWidth && zx > x - gridWidth){
+                zombies[i]->defend(attack);
+            }
+        }
+    }
+}
+
+void PlayScene::snowMelonBulletBreak(int x, int gY, int attack){
+    for(int i = 0; i < zombies.size(); ++i){
+        int zgY = zombies[i]->getGY();
+        int zx = zombies[i]->getX();
+        if(zgY == gY || zgY == gY-1 || zgY == gY+1){
+            if(zx < x + gridWidth && zx > x - gridWidth){
+                zombies[i]->defend(attack);
+                zombies[i]->slowDown();
+            }
+        }
+    }
+}
+
+void PlayScene::spikeWeedAttack(int gX, int gY, int attack){
+    for(int i = 0; i < zombies.size(); ++i){
+        if(zombies[i]->getGY() == gY && zombies[i]->getGX() == gX){
+            zombies[i]->defend(attack);
+        }
+    }
 }

@@ -72,6 +72,7 @@ public:
     void draw(cv::Mat &image);
     virtual void setGY(int gY);
     virtual int getGY();
+    virtual int getGX();
     virtual void setAttackAttributions(int hp, int attack, int defense, int attackSpeed);
     virtual void defend(int objAttack);
     virtual bool getIsAttack();
@@ -202,6 +203,54 @@ class SnowPea:public Plant{
         //~SnowPea();
 };
 
+#define MELONPULT_HP              125
+#define MELONPULT_ATTACK          0
+#define MELONPULT_DEFENSE         50
+#define MELONPULT_ATTACK_SPEED    (PFS*4)
+#define MELONPULT_NEED_SUN_NUMBER 12
+#define MELONPULT_COOLDOWN_TIME   (PFS*16)
+#define MELONPULT_SHOOT_Y         15
+
+class MelonPult:public Plant{
+    private:
+    public:
+        MelonPult();
+        //~MelonPult();
+};
+
+#define SNOWMELON_HP              125
+#define SNOWMELON_ATTACK          0
+#define SNOWMELON_DEFENSE         50
+#define SNOWMELON_ATTACK_SPEED    (PFS*4)
+#define SNOWMELON_NEED_SUN_NUMBER 16
+#define SNOWMELON_COOLDOWN_TIME   (PFS*20)
+#define SNOWMELON_SHOOT_Y         15
+
+class SnowMelon:public Plant{
+    private:
+    public:
+        SnowMelon();
+        //~SnowMelon();
+};
+
+#define SPIKEWEED_HP              150
+#define SPIKEWEED_ATTACK          25
+#define SPIKEWEED_DEFENSE         50
+#define SPIKEWEED_ATTACK_SPEED    (PFS)
+#define SPIKEWEED_NEED_SUN_NUMBER 12
+#define SPIKEWEED_COOLDOWN_TIME   (PFS*14)
+#define SPIKEWEED_HP_DESC         5
+
+class SpikeWeed:public Plant{
+    Q_OBJECT
+    private:
+    public:
+        SpikeWeed();
+        //~SpikeWeed();
+        void interactive(Zombie* z);
+signals:
+        void attackSignal(int gX, int gY, int attack);
+};
 
 #define NORMALZOMBIE_HP             180
 #define NORMALZOMBIE_ATTACK         50
@@ -341,6 +390,34 @@ class SnowBullet:public Bullet{
         SnowBullet();
         void interactive(Zombie *z);
         //~SnowBullet();
+};
+
+#define MELONBULLET_SPEED      5
+#define MELONBULLET_ATTACK     55
+
+class MelonBullet:public Bullet{
+   Q_OBJECT
+    private:
+    public:
+        MelonBullet();
+        void interactive(Zombie *z);
+        //~SnowBullet();
+signals:
+        void meloonBulletBreak(int x, int gY, int attack);
+};
+
+#define SNOWMELONBULLET_SPEED      5
+#define SNOWMELONBULLET_ATTACK     55
+
+class SnowMelonBullet:public Bullet{
+   Q_OBJECT
+    private:
+    public:
+        SnowMelonBullet();
+        void interactive(Zombie *z);
+        //~SnowBullet();
+signals:
+        void snowMeloonBulletBreak(int x, int gY, int attack);
 };
 
 #endif // MYOBJECT_H
