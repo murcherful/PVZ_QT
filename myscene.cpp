@@ -60,11 +60,15 @@ void MyScene::addButton(MyButton* button){
     buttons.push_back(button);
 }
 
+#define SHOP_WDITH 100
+
 PlayScene::PlayScene(){
     shopX = 150;
     shopY = 20;
     shopN = 8;
     sunN = 9999;
+    leftN = 0;
+    rightN = 0;
     for(int i = 0; i < GRID_Y_N; ++i){
         weedKiller[i] = 1;
         for(int j = 0; j < GRID_X_N; ++j){
@@ -79,9 +83,10 @@ PlayScene::PlayScene(){
 
 void PlayScene::addCooldownButton(CooldownButton *cooldownButton){
     int n = cooldownButtons.size();
-    cooldownButton->setPosition(shopX+n*100, shopY);
+    cooldownButton->setPosition(shopX+n*SHOP_WDITH, shopY);
     if(n >= shopN){
         cooldownButton->setDeactive();
+        rightN++;
     }
     buttons.push_back(cooldownButton);
     cooldownButtons.push_back(cooldownButton);
@@ -455,4 +460,42 @@ void PlayScene::squashAttack(int gX, int gY){
             zombies[i]->die();
         }
     }
+}
+
+void PlayScene::leftMove(){
+    if(leftN == 0){
+        return;
+    }
+    for(int i = 0; i < cooldownButtons.size(); ++i){
+        int x = cooldownButtons[i]->getX();
+        int y = cooldownButtons[i]->getY();
+        cooldownButtons[i]->setPosition(x+SHOP_WDITH, y);
+        if(x+SHOP_WDITH < shopX || x+SHOP_WDITH >= shopX+shopN*SHOP_WDITH){
+            cooldownButtons[i]->setDeactive();
+        }
+        else{
+            cooldownButtons[i]->setActive();
+        }
+    }
+    leftN--;
+    rightN++;
+}
+
+void PlayScene::rightMove(){
+    if(rightN == 0){
+        return;
+    }
+    for(int i = 0; i < cooldownButtons.size(); ++i){
+        int x = cooldownButtons[i]->getX();
+        int y = cooldownButtons[i]->getY();
+        cooldownButtons[i]->setPosition(x-SHOP_WDITH, y);
+        if(x-SHOP_WDITH < shopX || x-SHOP_WDITH >= shopX+shopN*SHOP_WDITH){
+            cooldownButtons[i]->setDeactive();
+        }
+        else{
+            cooldownButtons[i]->setActive();
+        }
+    }
+    rightN--;
+    leftN++;
 }

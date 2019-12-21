@@ -51,6 +51,8 @@ private:
     MyButton* exitButton;
     MyButton* exitButtonSmall;
     MyButton* shovelButton;
+    MyButton* leftMoveButton;
+    MyButton* rightMoveButton;
     //CooldownButton* peaShooterButton;
     //CooldownButton* sunFloewerButton;
 

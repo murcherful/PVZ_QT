@@ -44,7 +44,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     scene2.load(SOURCE_PATH+"playScene.png");
     exitButtonSmall = new MyButton();
     exitButtonSmall->setName("exitButtonSmall");
-    exitButtonSmall->setPosition(1150, 10);
+    exitButtonSmall->setPosition(1150, 20);
     exitButtonSmall->loadPicture(SOURCE_PATH+"exitButtonSmall.png", SOURCE_PATH+"exitButtonSmall_push.png");
     connect(exitButtonSmall, &MyButton::myRelease, this, &MainLoopThread::exitSmallButtonRelease);
     scene2.addButton(exitButtonSmall);
@@ -53,11 +53,25 @@ MainLoopThread::MainLoopThread(QLabel* label)
 
     shovelButton = new MyButton();
     shovelButton->setName("shovelButton");
-    shovelButton->setPosition(1000, 10);
+    shovelButton->setPosition(1000, 20);
     shovelButton->loadPicture(SOURCE_PATH+"shovelButton.png", SOURCE_PATH+"shovelButton_push.png");
     connect(shovelButton, &MyButton::pushed, this, &MainLoopThread::shovelButtonPush);
     connect(shovelButton, &MyButton::myRelease, this, &MainLoopThread::shovelButtonRelease);
     scene2.addButton(shovelButton);
+
+    leftMoveButton = new MyButton();
+    leftMoveButton->setName("leftMoveButton");
+    leftMoveButton->setPosition(105, 20);
+    leftMoveButton->loadPicture(SOURCE_PATH+"leftMoveButton.png", SOURCE_PATH+"leftMoveButton_push.png");
+    connect(leftMoveButton, &MyButton::myRelease, &scene2, &PlayScene::leftMove);
+    scene2.addButton(leftMoveButton);
+
+    rightMoveButton = new MyButton();
+    rightMoveButton->setName("rightMoveButton");
+    rightMoveButton->setPosition(950, 20);
+    rightMoveButton->loadPicture(SOURCE_PATH+"rightMoveButton.png", SOURCE_PATH+"rightMoveButton_push.png");
+    connect(rightMoveButton, &MyButton::myRelease, &scene2, &PlayScene::rightMove);
+    scene2.addButton(rightMoveButton);
 
     // add buttons of shop
     shopPlants.push_back(new SunFlower());
@@ -67,7 +81,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     shopPlants.push_back(new SnowMelon());
     shopPlants.push_back(new SpikeWeed());
     shopPlants.push_back(new Garlic());
-    //shopPlants.push_back(new Chomper());
+    shopPlants.push_back(new Chomper());
     shopPlants.push_back(new Squash());
 
     for(int i = 0; i < shopPlants.size(); ++i){

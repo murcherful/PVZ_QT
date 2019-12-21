@@ -44,6 +44,8 @@ public:
     bool weedKiller[GRID_Y_N];
     MyPicture weedKillerPicture;
     bool isCheckLeft;
+    int leftN;
+    int rightN;
 
     PlayScene();
     void addCooldownButton(CooldownButton* cooldownButton);
@@ -81,6 +83,8 @@ public slots:
     void snowMelonBulletBreak(int x, int gY, int attack);
     void spikeWeedAttack(int gX, int gY, int attack);
     void squashAttack(int gX, int gY);
+    void leftMove();
+    void rightMove();
 };
 
 #endif // MYSCENE_H
