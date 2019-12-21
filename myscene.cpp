@@ -392,6 +392,19 @@ void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, 
         connect(sw, &SpikeWeed::attackSignal, this, &PlayScene::spikeWeedAttack);
         addPlant(sw, plantX, plantY);
     }
+    else if(plantName == "Garlic"){
+        Garlic* g = new Garlic();
+        addPlant(g, plantX, plantY);
+    }
+    else if(plantName == "Chomper"){
+        Chomper* c = new Chomper();
+        addPlant(c, plantX, plantY);
+    }
+    else if(plantName == "Squash"){
+        Squash* s = new Squash();
+        connect(s, &Squash::squashBreak, this, &PlayScene::squashAttack);
+        addPlant(s, plantX, plantY);
+    }
     b->cooldown();
     sunN -= b->getCost();
     changeSun(sunN);
@@ -431,6 +444,15 @@ void PlayScene::spikeWeedAttack(int gX, int gY, int attack){
     for(int i = 0; i < zombies.size(); ++i){
         if(zombies[i]->getGY() == gY && zombies[i]->getGX() == gX){
             zombies[i]->defend(attack);
+        }
+    }
+}
+
+void PlayScene::squashAttack(int gX, int gY){
+    grids[gY*GRID_X_N+gX]->black();
+    for(int i = 0; i < zombies.size(); ++i){
+        if(zombies[i]->getGY() == gY && zombies[i]->getGX() == gX){
+            zombies[i]->die();
         }
     }
 }

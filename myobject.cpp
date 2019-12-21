@@ -343,16 +343,20 @@ void Zombie::slowDown(){
 void Zombie::randomUpDonw(){
     if(y-gridHeight <= GRID_Y){
         y+=gridHeight;
+        gY++;
     }
     else if(y+gridHeight >= MW_H){
         y-=gridHeight;
+        gY--;
     }
     else{
         if(rand()%2){
             y+=gridHeight;
+            gY++;
         }
         else{
             y-=gridHeight;
+            gY--;
         }
     }
 }
@@ -464,6 +468,83 @@ void SpikeWeed::interactive(Zombie *z){
         }
     }
 }
+
+Garlic::Garlic(){
+    setName("Garlic");
+    //setShootY(SPIKEWEED_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"Garlic.png");
+    setAttackAttributions(GARLIC_HP, GARLIC_ATTACK, GARLIC_DEFENSE, SPIKEWEED_ATTACK_SPEED);
+    setPlantAttributions(GARLIC_NEED_SUN_NUMBER, GARLIC_COOLDOWN_TIME, 0, 0);
+}
+
+void Garlic::interactive(Zombie *z){
+    if(getGY() == z->getGY() && getX()+getW() >= z->getX() && getX() <= z->getX()){
+        hp -= GARLIC_HP_DESC;
+        //std::cout << "[Debug]: sw attack" << std::endl;
+        //stopAttack();
+        z->randomUpDonw();
+    }
+}
+
+Chomper::Chomper(){
+    setName("Chomper");
+    //setShootY(SPIKEWEED_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"Chomper.png");
+    setAttackAttributions(CHOMPER_HP, CHOMPER_ATTACK, CHOMPER_DEFENSE, CHOMPER_ATTACK_SPEED);
+    setPlantAttributions(CHOMPER_NEED_SUN_NUMBER, CHOMPER_COOLDOWN_TIME, 1, 0);
+}
+
+void Chomper::update(){
+    Charactor::update();
+    if(attackCount != 0){
+        attackCount--;
+        if(attackCount == 0){
+            loadPicture(SOURCE_PATH+"Chomper.png");
+        }
+    }
+}
+
+void Chomper::interactive(Zombie *z){
+    if(getGY() == z->getGY() && getX()+getW() >= z->getX() && getX() <= z->getX()){
+        attackCount = attackSpeed;
+        z->defend(attack);
+        loadPicture(SOURCE_PATH+"Chomper_close.png");
+    }
+}
+
+Squash::Squash(){
+    isBreak = 0;
+    breakCount = 0;
+    setName("Squash");
+    //setShootY(SPIKEWEED_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"Squash.png");
+    setAttackAttributions(SQUASH_HP, SQUASH_ATTACK, SQUASH_DEFENSE, SQUASH_ATTACK_SPEED);
+    setPlantAttributions(SQUASH_NEED_SUN_NUMBER, SQUASH_COOLDOWN_TIME, 0, 0);
+}
+
+void Squash::update(){
+    Plant::update();
+    if(isBreak && breakCount != 0){
+        breakCount--;
+    }
+    else if(isBreak && breakCount == 0){
+        die();
+    }
+}
+
+void Squash::interactive(Zombie *z){
+    if(isBreak){
+        return;
+    }
+    if(getGY() == z->getGY() && getX()+getW()+gridWidth/2 >= z->getX() && getX() <= z->getX()){
+        squashBreak(gX+1, gY);
+        x += gridWidth;
+        gX++;
+        isBreak = 1;
+        breakCount = (PFS);
+    }
+}
+
 
 NormalZombie::NormalZombie(){
     setName("NormalZombie");

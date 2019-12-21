@@ -80,6 +80,7 @@ public slots:
     void melonBulletBreak(int x, int gY, int attack);
     void snowMelonBulletBreak(int x, int gY, int attack);
     void spikeWeedAttack(int gX, int gY, int attack);
+    void squashAttack(int gX, int gY);
 };
 
 #endif // MYSCENE_H

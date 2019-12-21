@@ -252,6 +252,62 @@ signals:
         void attackSignal(int gX, int gY, int attack);
 };
 
+#define GARLIC_HP              100
+#define GARLIC_ATTACK          0
+#define GARLIC_DEFENSE         50
+#define GARLIC_ATTACK_SPEED    (PFS)
+#define GARLIC_NEED_SUN_NUMBER 10
+#define GARLIC_COOLDOWN_TIME   (PFS*12)
+#define GARLIC_HP_DESC         10
+
+class Garlic:public Plant{
+    private:
+    public:
+        Garlic();
+        //~Garlic();
+        void interactive(Zombie* z);
+};
+
+#define CHOMPER_HP              		100
+#define CHOMPER_ATTACK          		-1
+#define CHOMPER_DEFENSE         		50
+#define CHOMPER_ATTACK_SPEED    		250
+#define CHOMPER_NEED_SUN_NUMBER 		10
+#define CHOMPER_COOLDOWN_TIME   		120
+#define CHOMPER_ATTACK_DIS   			2
+
+class Chomper:public Plant{
+    private:
+    public:
+        Chomper();
+        //~Chomper();
+        void update();
+        //void draw();
+        void interactive(Zombie* z);
+};
+
+#define SQUASH_HP              		100
+#define SQUASH_ATTACK          		-1
+#define SQUASH_DEFENSE         		50
+#define SQUASH_ATTACK_SPEED    		250
+#define SQUASH_NEED_SUN_NUMBER 		10
+#define SQUASH_COOLDOWN_TIME   		120
+
+class Squash:public Plant{
+    Q_OBJECT
+    private:
+    public:
+        int isBreak;
+        int breakCount;
+
+        Squash();
+        //~Squash();
+        void update();
+        void interactive(Zombie* z);
+    signals:
+        void squashBreak(int gX, int gY);
+};
+
 #define NORMALZOMBIE_HP             180
 #define NORMALZOMBIE_ATTACK         50
 #define NORMALZOMBIE_DEFENSE        50

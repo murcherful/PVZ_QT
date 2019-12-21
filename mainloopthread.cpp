@@ -66,6 +66,9 @@ MainLoopThread::MainLoopThread(QLabel* label)
     shopPlants.push_back(new MelonPult());
     shopPlants.push_back(new SnowMelon());
     shopPlants.push_back(new SpikeWeed());
+    shopPlants.push_back(new Garlic());
+    //shopPlants.push_back(new Chomper());
+    shopPlants.push_back(new Squash());
 
     for(int i = 0; i < shopPlants.size(); ++i){
         CooldownButton* cooldownButton = new CooldownButton();
@@ -124,6 +127,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     }
 
     // test add charactor
+/*
     NormalZombie* nz0 = new NormalZombie();
     nz0->setPosition(GRID_X+gridWidth*10, GRID_Y+gridHeight*2);
     connect(nz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
@@ -153,18 +157,18 @@ MainLoopThread::MainLoopThread(QLabel* label)
     pz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*3);
     connect(pz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(pz0);
-
+*/
     BackupZombie* baz0 = new BackupZombie();
     baz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*2);
     connect(baz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(baz0);
-
+/*
     DancingZombie* daz0 = new DancingZombie();
     daz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*1);
     connect(daz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     connect(daz0, &DancingZombie::genZombie, &scene2, &PlayScene::addBackupZombie);
     scene2.addZombie(daz0);
-
+*/
 /*
     SunFlower* sf0 = new SunFlower();
     //int sfX = GRID_X+gridWidth*0+gridWidth/2-sf0->getW()/2;
