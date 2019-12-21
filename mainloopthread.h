@@ -39,7 +39,7 @@ private:
     MyPicture shovelPicture;
     bool isMouseCenter;
 
-    int sunN;
+    //int sunN;
 
     MyScene *currentScene;
     MyScene scene1;
@@ -56,12 +56,12 @@ private:
 
     void mainLoop();
 
-    bool addPlant(std::string plantName);
+    //bool addPlant(std::string plantName);
 
 signals:
     void myExit();
 
-    void changeSun(int sunN);
+    //void changeSun(int sunN);
 
 public slots:
     void myMouseMoveSlot(QMouseEvent *e);
@@ -88,7 +88,7 @@ public slots:
     //void addPeaBullet(int x, int y);
     //void addSnowBullet(int x, int y);
 
-    void addSun(int n);
+    //void addSun(int n);
 
     void reStart();
 

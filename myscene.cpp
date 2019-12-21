@@ -64,7 +64,7 @@ PlayScene::PlayScene(){
     shopX = 150;
     shopY = 20;
     shopN = 8;
-    sunN = 0;
+    sunN = 10;
     for(int i = 0; i < GRID_Y_N; ++i){
         weedKiller[i] = 1;
         for(int j = 0; j < GRID_X_N; ++j){
@@ -219,9 +219,11 @@ Sun* PlayScene::getSun(int x, int y){
     return suns[y*GRID_X_N+x];
 }
 
+/*
 void PlayScene::checkSun(int n){
     sunN = n;
 }
+*/
 
 bool PlayScene::isGridValid(int x, int y){
     return plantFlags[y][x];
@@ -286,6 +288,8 @@ void PlayScene::reStart(){
     for(int i = 0; i < suns.size(); ++i){
         suns[i]->clearSun();
     }
+    sunN = 10;
+    changeSun(sunN);
 }
 
 void PlayScene::addBackupZombie(int gX, int gY){
@@ -327,4 +331,44 @@ void PlayScene::addSnowBullet(int x, int y){
     SnowBullet* sb = new SnowBullet();
     sb->setPosition(x, y);
     addBullet(sb);
+}
+
+void PlayScene::addSunNumber(int n){
+    sunN += n;
+    changeSun(sunN);
+}
+
+void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, CooldownButton *b){
+    if(plantX < 0 || plantX >= GRID_X_N ||plantY < 0 || plantY >= GRID_Y_N){
+        return;
+    }
+    //std::cout << "[Debug]: plantX:" << plantX << " plantY:" << plantY << std::endl;
+    if(isGridValid(plantX, plantY)){
+        return;
+    }
+    //std::cout << "[Debug]: plantName" << plantName << std::endl;
+    if(plantName == "PeaShooter"){
+        PeaShooter* ps = new PeaShooter();
+        connect(ps, &PeaShooter::genBullet, this, &PlayScene::addPeaBullet);
+        addPlant(ps, plantX, plantY);
+    }
+    else if(plantName == "SunFlower"){
+        SunFlower* sf = new SunFlower();
+        connect(sf, &SunFlower::genSun, getSun(plantX, plantY), &Sun::addSun);
+        addPlant(sf, plantX, plantY);
+
+    }
+    else if(plantName == "SnowPea"){
+        SnowPea* sp = new SnowPea();
+        connect(sp, &SnowPea::genBullet, this, &PlayScene::addSnowBullet);
+        addPlant(sp, plantX, plantY);
+    }
+    b->cooldown();
+    sunN -= b->getCost();
+    changeSun(sunN);
+    return;
+}
+
+void PlayScene::changeSunSiganl(){
+    changeSun(sunN);
 }
