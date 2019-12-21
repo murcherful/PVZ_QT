@@ -176,7 +176,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     //int psX = GRID_X+gridWidth*0+gridWidth/2-ps0->getW()/2;
     //int psY = GRID_Y+gridHeight*1+gridHeight/2-ps0->getH()/2;
     //ps0->setPosition(psX, psY);
-    connect(ps0, &PeaShooter::genBullet, this, &MainLoopThread::addPeaBullet);
+    connect(ps0, &PeaShooter::genBullet, &scene2, &PlayScene::addPeaBullet);
     scene2.addPlant(ps0, 0, 1);
 
 }
@@ -289,7 +289,7 @@ void MainLoopThread::cooldownButtonRelease(std::string plantName, CooldownButton
     }
     isMouseCenter = 0;
 }
-
+/*
 void MainLoopThread::addPeaBullet(int x, int y){
     PeaBullet* pb = new PeaBullet();
     pb->setPosition(x, y);
@@ -301,7 +301,7 @@ void MainLoopThread::addSnowBullet(int x, int y){
     sb->setPosition(x, y);
     scene2.addBullet(sb);
 }
-
+*/
 bool MainLoopThread::addPlant(std::string plantName){
     int plantX = (mouseX-GRID_X)/gridWidth;
     int plantY = (mouseY-GRID_Y)/gridHeight;
@@ -315,7 +315,7 @@ bool MainLoopThread::addPlant(std::string plantName){
     //std::cout << "[Debug]: plantName" << plantName << std::endl;
     if(plantName == "PeaShooter"){
         PeaShooter* ps = new PeaShooter();
-        connect(ps, &PeaShooter::genBullet, this, &MainLoopThread::addPeaBullet);
+        connect(ps, &PeaShooter::genBullet, &scene2, &PlayScene::addPeaBullet);
         scene2.addPlant(ps, plantX, plantY);
     }
     else if(plantName == "SunFlower"){
@@ -326,7 +326,7 @@ bool MainLoopThread::addPlant(std::string plantName){
     }
     else if(plantName == "SnowPea"){
         SnowPea* sp = new SnowPea();
-        connect(sp, &SnowPea::genBullet, this, &MainLoopThread::addSnowBullet);
+        connect(sp, &SnowPea::genBullet, &scene2, &PlayScene::addSnowBullet);
         scene2.addPlant(sp, plantX, plantY);
     }
     return 1;

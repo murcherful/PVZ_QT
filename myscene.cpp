@@ -316,3 +316,15 @@ void PlayScene::addBackupZombie(int gX, int gY){
     }
 
 }
+
+void PlayScene::addPeaBullet(int x, int y){
+    PeaBullet* pb = new PeaBullet();
+    pb->setPosition(x, y);
+    addBullet(pb);
+}
+
+void PlayScene::addSnowBullet(int x, int y){
+    SnowBullet* sb = new SnowBullet();
+    sb->setPosition(x, y);
+    addBullet(sb);
+}

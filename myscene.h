@@ -68,6 +68,9 @@ public slots:
     void checkSun(int n);
     void checkLeft(int gY);
     void addBackupZombie(int gX, int gY);
+
+    void addPeaBullet(int x, int y);
+    void addSnowBullet(int x, int y);
 };
 
 #endif // MYSCENE_H
