@@ -8,6 +8,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     //a.setOverrideCursor(Qt::BlankCursor);
     MainWindow w;
+    w.setWindowTitle("PVZ");
     w.show();
     return a.exec();
 }

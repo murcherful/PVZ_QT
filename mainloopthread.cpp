@@ -232,12 +232,12 @@ void MainLoopThread::mainLoop(){
     currentScene->draw(image);
 
     // debug
-    cv::putText(image, "HELLO WORLD!", cv::Point(0, image.rows-1), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255));
+    //cv::putText(image, "HELLO WORLD!", cv::Point(0, image.rows-1), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255));
     // draw mouse info
-    std::stringstream ss;
-    ss <<"x: " << mouseX <<" y: " << mouseY;
+    //std::stringstream ss;
+    //ss <<"x: " << mouseX <<" y: " << mouseY;
     //std::cout << ss.str() << std::endl;
-    cv::putText(image, ss.str(), cv::Point(0, image.rows-1-25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255));
+    //cv::putText(image, ss.str(), cv::Point(0, image.rows-1-25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 255));
 
     // draw mouse
     //cv::circle(image, cv::Point(mouseX, mouseY), 10, cv::Scalar(255, 0, 0), -1);
