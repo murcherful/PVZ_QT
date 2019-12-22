@@ -6,6 +6,7 @@ int gridWidth = -1;
 
 MainLoopThread::MainLoopThread(QLabel* label)
 {
+    srand(time(0));
     this->label = label;
     this->image.create(MW_H, MW_W, CV_8UC3);
     this->isStop = 0;
@@ -175,12 +176,11 @@ MainLoopThread::MainLoopThread(QLabel* label)
     pz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*3);
     connect(pz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(pz0);
-*/
     BackupZombie* baz0 = new BackupZombie();
     baz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*2);
     connect(baz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);
     scene2.addZombie(baz0);
-/*
+
     DancingZombie* daz0 = new DancingZombie();
     daz0->setPosition(GRID_X+gridWidth*9, GRID_Y+gridHeight*1);
     connect(daz0, &Zombie::getLeft, &scene2, &PlayScene::checkLeft);

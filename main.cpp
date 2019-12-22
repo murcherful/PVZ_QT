@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    srand(time(0));
+    //srand(time(0));
     QApplication a(argc, argv);
     //a.setOverrideCursor(Qt::BlankCursor);
     MainWindow w;

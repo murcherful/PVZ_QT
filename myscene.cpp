@@ -69,6 +69,8 @@ PlayScene::PlayScene(){
     sunN = 9999;
     leftN = 0;
     rightN = 0;
+    score = 0;
+    genZombieCount = 0;
     for(int i = 0; i < GRID_Y_N; ++i){
         weedKiller[i] = 1;
         for(int j = 0; j < GRID_X_N; ++j){
@@ -124,6 +126,10 @@ void PlayScene::update(){
     if(isCheckLeft){
         isCheckLeft = 0;
     }
+    genZombieCount = (genZombieCount+1)%GEN_ZOMBIE_SPEED;
+    if(genZombieCount == 0){
+        randmGenZombie();
+    }
 }
 
 void PlayScene::draw(cv::Mat &image){
@@ -146,6 +152,14 @@ void PlayScene::draw(cv::Mat &image){
     cv::rectangle(image, cv::Point(sunX, sunY), cv::Point(sunX+sunPicture.width(), sunY+sunPicture.height()), cv::Scalar(20, 105, 139), 3);
     sunPicture.draw(sunX, sunY, image);
     cv::putText(image, ss.str(), cv::Point(sunX, sunY+sunPicture.height()+25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
+    std::stringstream scoress;
+    scoress << "S: " << score;
+    cv::putText(image, scoress.str(), cv::Point(sunX, sunY+sunPicture.height()+25+25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
+    /*
+    std::stringstream timess;
+    timess << "T: " << QTime::currentTime().minute() << ":" << QTime::currentTime().second();
+    cv::putText(image, timess.str(), cv::Point(sunX, sunY+sunPicture.height()+25+25+25), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 2);
+    */
     for(int i = 0; i < GRID_Y_N; ++i){
         if(weedKiller[i]){
             weedKillerPicture.draw(GRID_X-weedKillerPicture.width(), GRID_Y+(gridHeight-weedKillerPicture.height())/2+gridHeight*i, image);
@@ -204,6 +218,7 @@ void PlayScene::clear(){
         if((*i2)->isDead()){
             delete *i2;
             i2 = zombies.erase(i2);
+            score += 1;
         }
         else{
             i2++;
@@ -550,4 +565,39 @@ void PlayScene::potatoMineAttack(int gX, int gY){
             }
         }
     }
+}
+
+void PlayScene::randmGenZombie(){
+    int index = rand()%8;
+    int gY = rand()%5;
+    Zombie* z;
+    if(index == 0){
+        z = new NormalZombie();
+    }
+    else if(index == 1){
+        z = new ConeZombie();
+    }
+    else if(index == 2){
+        z = new NewsZombie();
+    }
+    else if(index == 3){
+        z = new BucketZombie();
+    }
+    else if(index == 4){
+        z = new DoorZombie();
+    }
+    else if(index == 5){
+        z = new PoleZombie();
+    }
+    else if(index == 6){
+        z = new BackupZombie();
+    }
+    else if(index == 7){
+        z = new DancingZombie();
+        connect((DancingZombie*)z, &DancingZombie::genZombie, this, &PlayScene::addBackupZombie);
+    }
+    z->setPosition(GRID_X+gridWidth*(GRID_X_N-1), GRID_Y+gridHeight*gY);
+    connect(z, &Zombie::getLeft, this, &PlayScene::checkLeft);
+    addZombie(z);
+
 }

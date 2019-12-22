@@ -5,6 +5,7 @@
 #include "mybutton.h"
 #include "mypicture.h"
 #include <vector>
+#include <QTimer>
 
 class MyScene:public MyObject
 {
@@ -25,6 +26,8 @@ public:
     virtual void addButton(MyButton* button);
 };
 
+#define GEN_ZOMBIE_SPEED (PFS*5)
+
 class PlayScene: public MyScene{
     Q_OBJECT
 public:
@@ -32,6 +35,7 @@ public:
     int shopY;
     int shopN;
     int sunN;
+    int score;
     MyPicture sunPicture;
     std::vector<CooldownButton*> cooldownButtons;
     std::vector<Grid*> grids;
@@ -46,6 +50,7 @@ public:
     bool isCheckLeft;
     int leftN;
     int rightN;
+    int genZombieCount;
 
     PlayScene();
     void addCooldownButton(CooldownButton* cooldownButton);
@@ -64,6 +69,7 @@ public:
     void reStart();
     void addPlantFromName(int plantX, int plantY, std::string plantName, CooldownButton* b);
     void changeSunSiganl();
+    void randmGenZombie();
 
 signals:
     void gameOver();
