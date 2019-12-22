@@ -607,6 +607,22 @@ void Jalapeno::update(){
     }
 }
 
+WallNut::WallNut(){
+    setName("WallNut");
+    //setShootY(WALLNUT_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"WallNut.png");
+    setAttackAttributions(WALLNUT_HP, WALLNUT_ATTACK, WALLNUT_DEFENSE, WALLNUT_ATTACK_SPEED);
+    setPlantAttributions(WALLNUT_NEED_SUN_NUMBER, WALLNUT_COOLDOWN_TIME, 1, 0);
+}
+
+Repeator::Repeator(){
+    setName("Repeator");
+    setShootY(REPEATOR_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"Repeator.png");
+    setAttackAttributions(REPEATOR_HP, REPEATOR_ATTACK, REPEATOR_DEFENSE, REPEATOR_ATTACK_SPEED);
+    setPlantAttributions(REPEATOR_NEED_SUN_NUMBER, REPEATOR_COOLDOWN_TIME, 1, 1);
+}
+
 NormalZombie::NormalZombie(){
     setName("NormalZombie");
     loadPicture(SOURCE_PATH+"NormalZombie.png");

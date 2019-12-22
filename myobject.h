@@ -357,6 +357,36 @@ class Jalapeno:public Plant{
         void jalapenoBreak(int gY);
 };
 
+#define WALLNUT_HP              		400
+#define WALLNUT_ATTACK          		0
+#define WALLNUT_DEFENSE         		150
+#define WALLNUT_ATTACK_SPEED    		1000
+#define WALLNUT_NEED_SUN_NUMBER 		8
+#define WALLNUT_COOLDOWN_TIME   		(PFS*8)
+
+class WallNut:public Plant{
+    private:
+    public:
+        WallNut();
+        //~WallNut();
+};
+
+#define REPEATOR_HP              		125
+#define REPEATOR_ATTACK          		0
+#define REPEATOR_DEFENSE         		50
+#define REPEATOR_ATTACK_SPEED    		(PFS/2)
+#define REPEATOR_NEED_SUN_NUMBER 		14
+#define REPEATOR_COOLDOWN_TIME   		(PFS*15)
+#define REPEATOR_SHOOT_Y         15
+
+class Repeator:public Plant{
+    private:
+    public:
+        Repeator();
+        //~Repeator();
+};
+
+
 #define NORMALZOMBIE_HP             180
 #define NORMALZOMBIE_ATTACK         50
 #define NORMALZOMBIE_DEFENSE        50

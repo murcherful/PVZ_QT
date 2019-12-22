@@ -420,6 +420,15 @@ void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, 
         connect(j, &Jalapeno::jalapenoBreak, this, &PlayScene::clearLine);
         addPlant(j, plantX, plantY);
     }
+    else if(plantName == "WallNut"){
+        WallNut* w = new WallNut();
+        addPlant(w, plantX, plantY);
+    }
+    else if(plantName == "Repeator"){
+        Repeator* r = new Repeator();
+        connect(r, &Repeator::genBullet, this, &PlayScene::addPeaBullet);
+        addPlant(r, plantX, plantY);
+    }
     b->cooldown();
     sunN -= b->getCost();
     changeSun(sunN);
