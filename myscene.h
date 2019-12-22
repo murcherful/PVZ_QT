@@ -85,6 +85,7 @@ public slots:
     void squashAttack(int gX, int gY);
     void leftMove();
     void rightMove();
+    void potatoMineAttack(int gX, int gY);
 };
 
 #endif // MYSCENE_H

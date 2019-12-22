@@ -259,6 +259,11 @@ void Plant::interactive(Zombie *z){
     }
 }
 
+void Plant::getOGXGY(int &gX, int &gY){
+    gX = this->gX;
+    gY = this->gY;
+}
+
 Zombie::Zombie(){
     moveCount = 0;
     slowDownCount = 0;
@@ -545,6 +550,41 @@ void Squash::interactive(Zombie *z){
     }
 }
 
+void Squash::getOGXGY(int &gX, int &gY){
+    gX = this->gX-1;
+    gY = this->gY;
+}
+
+PotatoMine::PotatoMine(){
+    isBreak = 0;
+    readyCount = POTATOMINE_READY_COUNT;
+    setName("PotatoMine");
+    //setShootY(SPIKEWEED_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"PotatoMine.png");
+    setAttackAttributions(POTATOMINE_HP, POTATOMINE_ATTACK, POTATOMINE_DEFENSE, POTATOMINE_ATTACK_SPEED);
+    setPlantAttributions(POTATOMINE_NEED_SUN_NUMBER, POTATOMINE_COOLDOWN_TIME, 1, 0);
+}
+
+void PotatoMine::update(){
+    Plant::update();
+    if(readyCount != 0){
+        readyCount--;
+        if(readyCount == 0){
+            loadPicture(SOURCE_PATH+"PotatoMine_ready.png");
+        }
+    }
+}
+
+void PotatoMine::interactive(Zombie *z){
+    if(isBreak){
+        return;
+    }
+    if(getGY() == z->getGY() && getX()+getW() >= z->getX() && getX() <= z->getX()){
+        potatoMineBreak(gX, gY);
+        isBreak = 1;
+        die();
+    }
+}
 
 NormalZombie::NormalZombie(){
     setName("NormalZombie");

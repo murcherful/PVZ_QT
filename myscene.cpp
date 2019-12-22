@@ -188,8 +188,9 @@ void PlayScene::clear(){
     std::vector<Plant*>::iterator i1 = plants.begin();
     while(i1 != plants.end()){
         if((*i1)->isDead()){
-            int gx = ((*i1)->getX() - GRID_X)/gridWidth;
-            int gy = ((*i1)->getY() - GRID_Y)/gridHeight;
+            int gx = 0; //((*i1)->getX() - GRID_X)/gridWidth;
+            int gy = 0; //((*i1)->getY() - GRID_Y)/gridHeight;
+            (*i1)->getOGXGY(gx, gy);
             delete *i1;
             i1 = plants.erase(i1);
             plantFlags[gy][gx] = 0;
@@ -235,11 +236,10 @@ bool PlayScene::isGridValid(int x, int y){
 }
 
 void PlayScene::removePlant(int x, int y){
-    if(plantFlags[y][x]){
-        for(int i = 0; i < plants.size(); ++i){
-            if(plants[i]->atPosition(x, y)){
-                plants[i]->die();break;
-            }
+    for(int i = 0; i < plants.size(); ++i){
+        if(plants[i]->atPosition(x, y)){
+            plants[i]->die();
+            break;
         }
     }
 }
@@ -410,6 +410,11 @@ void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, 
         connect(s, &Squash::squashBreak, this, &PlayScene::squashAttack);
         addPlant(s, plantX, plantY);
     }
+    else if(plantName == "PotatoMine"){
+        PotatoMine* p = new PotatoMine();
+        connect(p, &PotatoMine::potatoMineBreak, this, & PlayScene::potatoMineAttack);
+        addPlant(p, plantX, plantY);
+    }
     b->cooldown();
     sunN -= b->getCost();
     changeSun(sunN);
@@ -498,4 +503,37 @@ void PlayScene::rightMove(){
     }
     rightN--;
     leftN++;
+}
+
+int dirs[5][2] = {
+    {0, 0},
+    {0, -1},
+    {0, 1},
+    {1, 0},
+    {-1, 0}
+};
+
+void PlayScene::potatoMineAttack(int gX, int gY){
+    grids[gY*GRID_X_N+gX]->black();
+    if(gX-1 >= 0){
+        grids[gY*GRID_X_N+(gX-1)]->black();
+    }
+    if(gX+1 < GRID_X_N){
+        grids[gY*GRID_X_N+(gX+1)]->black();
+    }
+    if(gY-1 >= 0){
+        grids[(gY-1)*GRID_X_N+gX]->black();
+    }
+    if(gY+1 < GRID_Y_N){
+        grids[(gY+1)*GRID_X_N+gX]->black();
+    }
+    for(int i = 0; i < zombies.size(); ++i){
+        int x = zombies[i]->getGX();
+        int y = zombies[i]->getGY();
+        for(int j = 0; j < 5; ++j){
+            if(x = gX + dirs[j][0] && y == gY + dirs[j][1]){
+                zombies[i]->die();
+            }
+        }
+    }
 }

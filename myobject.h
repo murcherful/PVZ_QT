@@ -106,6 +106,7 @@ public:
     virtual int getCooldownTime();
     virtual void interactive(Zombie* z);
     virtual MyPicture* getpicture();
+    virtual void getOGXGY(int &gX, int &gY);
 
 signals:
     void genBullet(int x, int y);
@@ -304,8 +305,33 @@ class Squash:public Plant{
         //~Squash();
         void update();
         void interactive(Zombie* z);
+        void getOGXGY(int &gX, int &gY);
     signals:
         void squashBreak(int gX, int gY);
+};
+
+#define POTATOMINE_HP              		100
+#define POTATOMINE_ATTACK          		-1
+#define POTATOMINE_DEFENSE         		50
+#define POTATOMINE_ATTACK_SPEED    		-1
+#define POTATOMINE_NEED_SUN_NUMBER 		10
+#define POTATOMINE_COOLDOWN_TIME   		(PFS*12)
+#define POTATOMINE_READY_COUNT          (PFS*3)
+
+class PotatoMine:public Plant{
+    Q_OBJECT
+    private:
+    public:
+        int isBreak;
+        int readyCount;
+        int stayCount;
+
+        PotatoMine();
+        //~PotatoMine();
+        void update();
+        void interactive(Zombie* z);
+    signals:
+        void potatoMineBreak(int gX, int gY);
 };
 
 #define NORMALZOMBIE_HP             180
