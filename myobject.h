@@ -334,6 +334,29 @@ class PotatoMine:public Plant{
         void potatoMineBreak(int gX, int gY);
 };
 
+#define JALAPENO_HP              		100
+#define JALAPENO_ATTACK          		-1
+#define JALAPENO_DEFENSE         		50
+#define JALAPENO_ATTACK_SPEED    		250
+#define JALAPENO_NEED_SUN_NUMBER 		10
+#define JALAPENO_COOLDOWN_TIME   		(PFS*12)
+#define JALAPENO_READY_COUNT          	(PFS/2)
+
+class Jalapeno:public Plant{
+    Q_OBJECT
+    private:
+    public:
+        int isBreak;
+        int readyCount;
+
+        Jalapeno();
+        //~Jalapeno();
+        void update();
+        //void interactive(Zombie* z);
+    signals:
+        void jalapenoBreak(int gY);
+};
+
 #define NORMALZOMBIE_HP             180
 #define NORMALZOMBIE_ATTACK         50
 #define NORMALZOMBIE_DEFENSE        50

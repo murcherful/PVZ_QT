@@ -84,6 +84,7 @@ MainLoopThread::MainLoopThread(QLabel* label)
     shopPlants.push_back(new Chomper());
     shopPlants.push_back(new Squash());
     shopPlants.push_back(new PotatoMine());
+    shopPlants.push_back(new Jalapeno());
 
     for(int i = 0; i < shopPlants.size(); ++i){
         CooldownButton* cooldownButton = new CooldownButton();

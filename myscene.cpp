@@ -415,6 +415,11 @@ void PlayScene::addPlantFromName(int plantX, int plantY, std::string plantName, 
         connect(p, &PotatoMine::potatoMineBreak, this, & PlayScene::potatoMineAttack);
         addPlant(p, plantX, plantY);
     }
+    else if(plantName == "Jalapeno"){
+        Jalapeno* j = new Jalapeno();
+        connect(j, &Jalapeno::jalapenoBreak, this, &PlayScene::clearLine);
+        addPlant(j, plantX, plantY);
+    }
     b->cooldown();
     sunN -= b->getCost();
     changeSun(sunN);

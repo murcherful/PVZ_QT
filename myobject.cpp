@@ -586,6 +586,27 @@ void PotatoMine::interactive(Zombie *z){
     }
 }
 
+Jalapeno::Jalapeno(){
+    isBreak = 0;
+    readyCount = JALAPENO_READY_COUNT;
+    setName("Jalapeno");
+    //setShootY(SPIKEWEED_SHOOT_Y);
+    loadPicture(SOURCE_PATH+"Jalapeno.png");
+    setAttackAttributions(JALAPENO_HP, JALAPENO_ATTACK, JALAPENO_DEFENSE, JALAPENO_ATTACK_SPEED);
+    setPlantAttributions(JALAPENO_NEED_SUN_NUMBER, JALAPENO_COOLDOWN_TIME, 0, 0);
+}
+
+void Jalapeno::update(){
+    Plant::update();
+    if(readyCount != 0){
+        readyCount--;
+        if(readyCount == 0){
+            jalapenoBreak(gY);
+            die();
+        }
+    }
+}
+
 NormalZombie::NormalZombie(){
     setName("NormalZombie");
     loadPicture(SOURCE_PATH+"NormalZombie.png");

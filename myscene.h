@@ -60,7 +60,7 @@ public:
     void clear();
     bool isGridValid(int x, int y);
     void removePlant(int x, int y);
-    void clearLine(int gY);
+
     void reStart();
     void addPlantFromName(int plantX, int plantY, std::string plantName, CooldownButton* b);
     void changeSunSiganl();
@@ -86,6 +86,7 @@ public slots:
     void leftMove();
     void rightMove();
     void potatoMineAttack(int gX, int gY);
+    void clearLine(int gY);
 };
 
 #endif // MYSCENE_H
