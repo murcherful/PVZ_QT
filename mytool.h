@@ -29,6 +29,7 @@
 #define GRID_X_S    0       // the space between two grid in x direction
 #define GRID_Y_S    0       // the space between two grid in y direction
 #define SOURCE_PATH std::string("D:\\WorkSpace\\Qt\\PVZ\\picture\\")
+//#define SOURCE_PATH std::string("picture\\")
 namespace MYTOOL {
     QImage mat2QImage(cv::Mat m);
     QImage myResiezQImage(QImage img, QSize size);
